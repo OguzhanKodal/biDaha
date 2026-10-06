@@ -1,3 +1,5 @@
+import { normalizeName } from './names';
+
 export const examTypes = ['YKS', 'DGS', 'KPSS', 'OTHER'] as const;
 
 export type ExamType = (typeof examTypes)[number];
@@ -48,8 +50,4 @@ export function isExamType(value: string): value is ExamType {
 export function missingSubjects(exam: ExamType, existingFolderNames: readonly string[]): string[] {
   const existing = new Set(existingFolderNames.map(normalizeName));
   return examSubjects[exam].filter((name) => !existing.has(normalizeName(name)));
-}
-
-function normalizeName(name: string): string {
-  return name.trim().toLocaleLowerCase('tr-TR');
 }

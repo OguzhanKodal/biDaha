@@ -14,6 +14,7 @@ Kısa ve atlanamaz 3 adım + 1 isteğe bağlı adım:
 3. **Bir soru kaç kez tekrar edilsin:** 3–10 arası seçici, varsayılan 5
 4. *(İsteğe bağlı)* **Sınav tarihi** → ana ekranda geri sayım
 Hepsi sonradan Ayarlar'dan değiştirilebilir.
+İsim zorunlu (en fazla 30 karakter). Sınav tarihi bugünden önce olamaz. Cevaplar son adımda tek seferde kaydedilir; yarıda kalan onboarding baştan başlar.
 
 ## 3. Klasörler
 İki seviye: **Ders › Konu** (ör. Matematik › Türev). Soru bir derse ya da konuya eklenebilir.
@@ -29,7 +30,10 @@ Sınav sonradan değiştirilirse mevcut klasörler silinmez; yeni sınavın eksi
 Klasör renkleri `src/theme/` paletinden seçilir; veritabanında renk kodu değil palet anahtarı (ör. `blue`) tutulur, böylece açık/koyu modda farklı ton gösterilebilir.
 İçinde soru olan klasör silinirken onay istenir (sorular silinsin mi / başka klasöre mi taşınsın).
 
-Klasör kartında: ad, toplam soru, bugün tekrar edilecek sayısı, tamamlanma oranı.
+Klasör kartında: ad, toplam soru, bugün tekrar edilecek sayısı, tamamlanma oranı. Dersin sayılarına konularındaki sorular da dahildir.
+Klasör adı boş olamaz, en fazla 40 karakter, aynı seviyede (aynı ders altında ya da dersler arasında) tekrar edemez.
+Sıralama "Düzenle" modunda ↑↓ butonlarıyla yapılır; karta uzun basınca Düzenle/Sil menüsü açılır.
+Ders silinince konuları da silinir. İçinde (konular dahil) soru varsa önce sorular başka bir klasöre taşınır; "sorularla birlikte sil" seçeneği soru silme (Faz 2) ile gelir.
 
 ## 4. Soru ekleme
 | Alan | Zorunlu | Not |
@@ -123,3 +127,6 @@ Metin: "Bugün 8 soru seni bekliyor". Bekleyen soru yoksa bildirim gönderilmez.
 
 ## 14. Kapsam dışı (şimdilik)
 Hesap/bulut senkronu, yapay zekâ çözümü, OCR, PDF dışa aktarma, karışık tekrar modu, arama, iPad/Android optimizasyonu, Apple Watch.
+
+## 15. Görsel dil
+Sıcak, mat pastel tonlar (Apple varsayılanlarından bilinçli olarak uzak): krem zemin, hardal sarısı ana renk, adaçayı yeşili (Çözdüm) ve kiremit kırmızısı (Çözemedim); koyu modda sıcak koyu kahve zemin. Klasör renkleri pastel 9 tonluk paletten seçilir. Açık sarı dolgu üzerine koyu yazı; yazı/ikon vurguları ayrı, koyu bir hardal tonuyla (`accent`). Tüm yazı/zemin eşleşmeleri WCAG 4.5:1 kontrastı sağlar. Renkler `src/theme/colors.ts` dışında yazılmaz.

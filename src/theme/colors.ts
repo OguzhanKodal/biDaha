@@ -9,8 +9,11 @@ export type ThemeColors = {
   border: string;
   text: string;
   textSecondary: string;
+  /** Dolgu rengi (ana buton, ilerleme çubuğu). Üzerine onPrimary yazılır. */
   primary: string;
   onPrimary: string;
+  /** Vurgu rengi yazı/ikon için (başlık butonları, seçim). Zemin üzerinde okunur kontrastta. */
+  accent: string;
   /** "Çözdüm" / tamamlanan sorular */
   success: string;
   successSoft: string;
@@ -19,34 +22,37 @@ export type ThemeColors = {
   dangerSoft: string;
 };
 
+// Sıcak, mat pastel palet: krem zemin, hardal sarısı vurgu, adaçayı yeşili ve kiremit kırmızısı.
 export const colors: Record<ColorScheme, ThemeColors> = {
   light: {
-    background: '#FFFFFF',
-    surface: '#F2F2F7',
-    surfaceSelected: '#E5E5EA',
-    border: '#D1D1D6',
-    text: '#111114',
-    textSecondary: '#5F6168',
-    primary: '#3B5BDB',
-    onPrimary: '#FFFFFF',
-    success: '#1F8A4C',
-    successSoft: '#DDF3E5',
-    danger: '#C92A2A',
-    dangerSoft: '#FBE1E1',
+    background: '#FBF8F1',
+    surface: '#F3EEE2',
+    surfaceSelected: '#E9E2D2',
+    border: '#D9CFBC',
+    text: '#2B2721',
+    textSecondary: '#6B6357',
+    primary: '#E8C468',
+    onPrimary: '#2B2721',
+    accent: '#7A5D0C',
+    success: '#3D6A42',
+    successSoft: '#E1ECDD',
+    danger: '#96432F',
+    dangerSoft: '#F5E1DB',
   },
   dark: {
-    background: '#000000',
-    surface: '#1C1C1E',
-    surfaceSelected: '#2C2C2E',
-    border: '#3A3A3C',
-    text: '#F5F5F7',
-    textSecondary: '#A1A1AA',
-    primary: '#7C93F2',
-    onPrimary: '#0B1033',
-    success: '#4CC77F',
-    successSoft: '#123222',
-    danger: '#FF6B6B',
-    dangerSoft: '#3A1717',
+    background: '#1C1A17',
+    surface: '#27241F',
+    surfaceSelected: '#332F29',
+    border: '#443F37',
+    text: '#F2EDE3',
+    textSecondary: '#B3AA9B',
+    primary: '#E3C06A',
+    onPrimary: '#231F18',
+    accent: '#E8C877',
+    success: '#8DB98F',
+    successSoft: '#25312A',
+    danger: '#E08D7F',
+    dangerSoft: '#3A2622',
   },
 };
 
@@ -55,15 +61,15 @@ export const colors: Record<ColorScheme, ThemeColors> = {
  * gösterilecek ton açık/koyu moda göre buradan seçilir.
  */
 export const folderPalette = {
-  blue: { light: '#3B5BDB', dark: '#7C93F2' },
-  teal: { light: '#0C8599', dark: '#3BC9DB' },
-  green: { light: '#2B8A3E', dark: '#69DB7C' },
-  yellow: { light: '#E67700', dark: '#FFD43B' },
-  orange: { light: '#D9480F', dark: '#FFA94D' },
-  red: { light: '#C92A2A', dark: '#FF8787' },
-  pink: { light: '#A61E4D', dark: '#F783AC' },
-  purple: { light: '#6741D9', dark: '#B197FC' },
-  gray: { light: '#495057', dark: '#ADB5BD' },
+  blue: { light: '#7FA7C9', dark: '#94B8D6' },
+  teal: { light: '#7DB8B0', dark: '#8FC7BF' },
+  green: { light: '#93B88A', dark: '#A5C79C' },
+  yellow: { light: '#E3C46A', dark: '#E8CD80' },
+  orange: { light: '#E2A574', dark: '#E8B386' },
+  red: { light: '#D98880', dark: '#E29A92' },
+  pink: { light: '#D9A0B8', dark: '#E2B0C5' },
+  purple: { light: '#A99AC9', dark: '#B8AAD6' },
+  gray: { light: '#A8A39A', dark: '#B5B0A6' },
 } as const satisfies Record<string, Record<ColorScheme, string>>;
 
 export type FolderColor = keyof typeof folderPalette;

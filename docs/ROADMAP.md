@@ -11,10 +11,10 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Hata nedeni etiketleri ve sınav ön ayarları (`src/domain/examPresets.ts`)
 
 ## Faz 1 — Onboarding ve klasörler
-- [ ] Onboarding: isim, sınav, tekrar sayısı, isteğe bağlı sınav tarihi (SPEC §2)
-- [ ] Sınava göre hazır derslerin oluşturulması
-- [ ] Sekme yapısı: Bugün, Klasörler, İstatistik, Ayarlar (içleri boş olabilir)
-- [ ] Klasörler ekranı: ders listesi, konu alt seviyesi, ekle/düzenle/sil/sırala/renk (SPEC §3)
+- [x] Onboarding: isim, sınav, tekrar sayısı, isteğe bağlı sınav tarihi (SPEC §2)
+- [x] Sınava göre hazır derslerin oluşturulması
+- [x] Sekme yapısı: Bugün, Klasörler, İstatistik, Ayarlar (içleri boş olabilir)
+- [x] Klasörler ekranı: ders listesi, konu alt seviyesi, ekle/düzenle/sil/sırala/renk (SPEC §3)
 
 ## Faz 2 — Soru ekleme
 - [ ] Kamera ve galeriden fotoğraf seçme
@@ -23,6 +23,7 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [ ] Kullanıcının kendi hata nedeni etiketini eklemesi (SPEC §4)
 - [ ] Soru listesi (Aktif/Tamamlanan sekmeleri) ve soru detay/düzenleme ekranı (SPEC §7)
 - [ ] Soru silme (fotoğraf dosyalarıyla birlikte, onaylı)
+- [ ] Klasör silmede "Sorularla birlikte sil" seçeneği (şimdilik sadece taşıma var)
 
 ## Faz 3 — Aralıklı tekrar (uygulamanın kalbi)
 - [ ] `src/domain/spacedRepetition.ts` + kapsamlı testler (SPEC §5 tüm kurallar)
@@ -55,3 +56,5 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 
 ## Sonraki fikirler (kapsam dışı)
 Karışık tekrar, arama/filtre, PDF dışa aktarma, iCloud yedeği, OCR, yapay zekâ çözüm, Android.
+
+**Android'e geçerken:** SF Symbols sadece iOS'ta var; `src/components/Icon.tsx` ve `(tabs)/_layout.tsx` içindeki her ikon için Android (Material) karşılığı tanımlanmalı. `@expo/ui/swift-ui` tarih seçicisinin Android karşılığı gerekir.

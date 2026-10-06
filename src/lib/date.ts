@@ -28,7 +28,7 @@ export function isLocalDate(value: string): value is LocalDate {
 }
 
 /** Öğle saatine sabitlenir; yaz saati geçişleri günü kaydırmaz. */
-function parseLocalDate(value: LocalDate): Date {
+export function parseLocalDate(value: LocalDate): Date {
   if (!isLocalDate(value)) throw new Error(`Geçersiz tarih: ${value}`);
   const [y, m, d] = value.split('-').map(Number);
   return new Date(y, m - 1, d, 12);

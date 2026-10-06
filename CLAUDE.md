@@ -33,9 +33,13 @@ Yol haritası ve ilerleme: `docs/ROADMAP.md` — biten maddeleri işaretle.
 ```
 src/
   app/                  # Ekranlar (expo-router) — burada sadece route dosyaları olur
-    (onboarding)/       # İlk açılış: isim, sınav, tekrar sayısı, sınav tarihi
-    (tabs)/             # Ana sekmeler: Bugün, Klasörler, İstatistik, Ayarlar
-    folder/[id].tsx     # Ders/konu içeriği
+    (onboarding)/       # İlk açılış: name → exam → repetitions → exam-date
+    (tabs)/             # Ana sekmeler (NativeTabs): index=Bugün, folders, stats, settings
+      folders/          # Klasörler sekmesinin kendi Stack'i (sekme çubuğu görünür kalır)
+        index.tsx       # Ders listesi
+        [id].tsx        # Ders/konu içeriği
+        edit.tsx        # Ders/konu ekle-düzenle (modal)
+        move.tsx        # Silmeden önce soruları taşı (modal)
     question/[id].tsx   # Soru detayı
     question/new.tsx    # Soru ekleme
     review.tsx          # Tekrar oturumu (kart + kaydırma)
@@ -45,7 +49,7 @@ src/
   components/           # Genel UI bileşenleri
   lib/                  # Yardımcılar: tarih, dosya, bildirim
   theme/                # Renkler, yazı tipleri, aralıklar
-__tests__/              # domain/ testleri
+__tests__/              # domain/, db/ (node:sqlite ile gerçek SQL) ve lib/ testleri
 docs/                   # SPEC.md, ROADMAP.md, kararlar
 ```
 
@@ -54,6 +58,7 @@ docs/                   # SPEC.md, ROADMAP.md, kararlar
    - Şema değişikliği yalnızca numaralı migration ile yapılır, mevcut migration'lar asla düzenlenmez.
    - Fotoğraf dosyası, veritabanı kaydı silinmeden önce silinmez; silme işlemleri onay ister.
    - Veritabanı değişikliklerinde `veritabani-degisikligi` skill'ini izle.
+   - Sorgular `src/db/database.ts` arayüzünü alır; yazmalarda `withTransactionAsync` kullan (`withExclusiveTransactionAsync` ayrı bağlantı açar, orada `foreign_keys` kapalıdır).
 2. **İş mantığı `src/domain/` içinde saf fonksiyon** olarak yazılır ve test edilir (özellikle aralıklı tekrar hesabı).
    Ekranlar hesaplama yapmaz, domain fonksiyonlarını çağırır.
 3. **Tarihler yerel gün olarak** tutulur (`YYYY-MM-DD`). "Bugün tekrar edilecekler" saat dilimine göre değil, kullanıcının gününe göre hesaplanır.
