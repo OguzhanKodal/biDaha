@@ -66,3 +66,9 @@ export function formatLongDate(value: LocalDate): string {
   const date = parseLocalDate(value);
   return `${date.getDate()} ${MONTHS_TR[date.getMonth()]} ${date.getFullYear()}`;
 }
+
+/** "6 Ekim" */
+export function formatDayMonth(value: LocalDate): string {
+  const date = parseLocalDate(value);
+  return `${date.getDate()} ${MONTHS_TR[date.getMonth()]}`;
+}

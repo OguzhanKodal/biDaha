@@ -25,6 +25,10 @@ export type ThemeColors = {
   onMedia: string;
   /** Kırpma çerçevesi dışını karartan katman */
   scrim: string;
+  /** Grafik çubukları (tek seri). dataviz doğrulayıcısından geçti: zemin ve kart üzerinde ≥3:1. */
+  chart: string;
+  /** Grafik ızgarası, taban çizgisi ve boş ilerleme izi */
+  chartTrack: string;
 };
 
 // Sıcak, mat pastel palet: krem zemin, hardal sarısı vurgu, adaçayı yeşili ve kiremit kırmızısı.
@@ -46,6 +50,8 @@ export const colors: Record<ColorScheme, ThemeColors> = {
     media: '#000000',
     onMedia: '#FFFFFF',
     scrim: 'rgba(0, 0, 0, 0.55)',
+    chart: '#A67C00',
+    chartTrack: '#E9E2D2',
   },
   dark: {
     background: '#1C1A17',
@@ -64,6 +70,8 @@ export const colors: Record<ColorScheme, ThemeColors> = {
     media: '#000000',
     onMedia: '#FFFFFF',
     scrim: 'rgba(0, 0, 0, 0.55)',
+    chart: '#B88A1E',
+    chartTrack: '#332F29',
   },
 };
 

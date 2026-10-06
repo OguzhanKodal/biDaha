@@ -43,9 +43,9 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Gerçek bir yedeği silip geri yükleyerek uçtan uca test
 
 ## Faz 6 — İstatistik
-- [ ] Ders bazında sayılar, tamamlanma oranı
-- [ ] Hata nedeni dağılımı (genel + ders bazında)
-- [ ] Seri ve son 30 gün grafiği (SPEC §9)
+- [x] Ders bazında sayılar, tamamlanma oranı
+- [x] Hata nedeni dağılımı (genel + ders bazında)
+- [x] Seri ve son 30 gün grafiği (SPEC §9)
 
 ## Faz 7 — Cila ve yayına hazırlık
 - [ ] Boş durumlar ("Henüz soru eklemedin"), yükleniyor durumları, hata mesajları

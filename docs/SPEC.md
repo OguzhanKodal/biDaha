@@ -103,6 +103,11 @@ Günü geçmiş sorunun tekrar günü de "Bugün" yazılır.
 - Hata nedeni dağılımı (genel ve ders bazında): "Matematik yanlışlarının %45'i dikkatsizlik"
 - Seri ve son 30 günün tekrar sayıları
 Tekrar kayıtları (`review_logs`) tutulur; istatistikler buradan hesaplanır.
+- Üstte özet sayılar (grafik değil): seri, toplam soru, tamamlanan oranı, son 30 gündeki tekrar.
+- Son 30 gün: tek seri sütun grafik (serbest çalışma dahil tüm tekrarlar); sütuna dokununca o günün tekrar / çözdüm / çözemedim sayısı yazar. Tekrar yoksa grafik yerine açıklama.
+- Ders bazında: soru sayısı ve tamamlanma oranı (konular dahil); satır dersin klasörünü açar.
+- Hata nedeni dağılımı **sorulara göre**: "Matematik sorularında en sık neden: Dikkatsizlik (%45)" = kapsamdaki soruların %45'inde bu neden seçili. Bir soruda birden fazla neden olabildiği için toplam %100'ü geçebilir; etiketsiz soru sayısı ayrıca yazılır. Kapsam: Tümü ya da bir ders (konuları dahil).
+- Grafik rengi tek tondur (`chart`), dataviz doğrulayıcısından geçmiştir; ders renkleri yalnızca kimlik noktası olarak kullanılır.
 
 ## 10. Bildirim
 Günlük yerel hatırlatma; saat onboarding'in son adımında seçilir (varsayılan 20:00), Ayarlar'dan değiştirilebilir ve kapatılabilir.
