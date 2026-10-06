@@ -26,11 +26,11 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Klasör silmede "Sorularla birlikte sil" seçeneği (şimdilik sadece taşıma var)
 
 ## Faz 3 — Aralıklı tekrar (uygulamanın kalbi)
-- [ ] `src/domain/spacedRepetition.ts` + kapsamlı testler (SPEC §5 tüm kurallar)
-- [ ] Tekrar ekranı: soru → "Çözümü göster" → sağa/sola kaydırma + butonlar + geri al (SPEC §6)
-- [ ] `review_logs` kaydı, serbest çalışma ayrımı
-- [ ] Oturum sonu özeti
-- [ ] Ana ekran: selamlama, "Bugün tekrar edilecek" kartı, geri sayım, seri (SPEC §8)
+- [x] `src/domain/spacedRepetition.ts` + kapsamlı testler (SPEC §5 tüm kurallar)
+- [x] Tekrar ekranı: soru → "Çözümü göster" → sağa/sola kaydırma + butonlar + geri al (SPEC §6)
+- [x] `review_logs` kaydı, serbest çalışma ayrımı
+- [x] Oturum sonu özeti
+- [x] Ana ekran: selamlama, "Bugün tekrar edilecek" kartı, geri sayım, seri (SPEC §8)
 
 ## Faz 4 — Ayarlar ve bildirim
 - [ ] Ayarlar ekranı (SPEC §12), N değişince mevcut soruların güncellenmesi

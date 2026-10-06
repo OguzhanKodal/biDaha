@@ -8,6 +8,7 @@ import { Chip } from '@/components/Chip';
 import { EmptyState } from '@/components/EmptyState';
 import { Icon } from '@/components/Icon';
 import { countQuestionsByStatus, listQuestions } from '@/db/questions';
+import { countActive, countDue } from '@/db/reviews';
 import { useDatabase } from '@/db/useDatabase';
 import {
   questionSortLabels,
@@ -32,11 +33,13 @@ export function QuestionSection({ folderId }: { folderId: number }) {
   const todayValue = today();
 
   const { data, reload } = useFocusedData(async () => {
-    const [questions, counts] = await Promise.all([
+    const [questions, counts, due, active] = await Promise.all([
       listQuestions(db, folderId, status, sort),
       countQuestionsByStatus(db, folderId),
+      countDue(db, today(), folderId),
+      countActive(db, folderId),
     ]);
-    return { questions, counts };
+    return { questions, counts, due, active };
   });
 
   const changeStatus = (next: QuestionStatusFilter) => {
@@ -98,7 +101,21 @@ export function QuestionSection({ folderId }: { folderId: number }) {
         />
       </View>
 
-      <Button title="Soru ekle" onPress={addQuestion} />
+      {data && data.due > 0 ? (
+        <Button
+          title={`Tekrara başla (${data.due})`}
+          onPress={() => router.push({ pathname: '/review', params: { mode: 'due', folderId: String(folderId) } })}
+        />
+      ) : null}
+      {data && data.active > 0 ? (
+        <Button
+          title="Serbest çalış"
+          variant="secondary"
+          accessibilityHint="Günü gelmemiş soruları da çalışırsın; sadece günü gelenler sayılır"
+          onPress={() => router.push({ pathname: '/review', params: { mode: 'free', folderId: String(folderId) } })}
+        />
+      ) : null}
+      <Button title="Soru ekle" variant={data && data.due > 0 ? 'secondary' : 'primary'} onPress={addQuestion} />
 
       {data && data.questions.length === 0 ? (
         status === 'active' ? (

@@ -55,7 +55,7 @@ Yeni soru formu açılınca doğrudan "Fotoğraf çek / Galeriden seç" sorulur.
 Soru düzenlenince tekrar durumu (başarı, sonraki tarih) değişmez.
 
 ## 5. Aralıklı tekrar
-Kullanıcının seçtiği tekrar sayısı = **N** (varsayılan 5). Aralıklar (gün): **1, 3, 7, 14, 30, 60, ...**
+Kullanıcının seçtiği tekrar sayısı = **N** (varsayılan 5). Aralıklar (gün): **1, 3, 7, 14, 30, 60**, sonrası ikiye katlanır ama **en fazla 120 gün** (N=10 için: 3, 7, 14, 30, 60, 120, 120, 120, 120).
 
 - Soru eklendiğinde: `başarı = 0`, `sonraki tekrar = yarın`
 - **Sağa kaydır (Çözdüm):** `başarı + 1`
@@ -63,6 +63,7 @@ Kullanıcının seçtiği tekrar sayısı = **N** (varsayılan 5). Aralıklar (g
   - değilse → `sonraki tekrar = bugün + aralık[başarı]` (1. başarıdan sonra 3 gün, 2.'den sonra 7 gün…)
 - **Sola kaydır (Çözemedim):** başarı sayılmaz (değişmez), `son sonuç = başarısız`, `sonraki tekrar = yarın`
 - **Erken tekrar:** Günü gelmemiş soru klasörden açılıp çalışılabilir ama sayaca sayılmaz ("serbest çalışma"). Bu, aynı gün art arda 5 tekrarla soruyu bitirmeyi önler.
+- **Sayılma kuralı:** Bir tekrar yalnızca soru o gün tekrar günündeyse (sonraki tekrar ≤ bugün, tamamlanmamış) sayılır; hangi ekrandan açıldığı fark etmez. Sayılmayan tekrar sorunun durumunu değiştirmez, `review_logs`'a `counted = 0` olarak yazılır.
 - **Gecikme:** Günü geçmiş sorular "Bugün" listesinde kalır; ceza yok.
 - **N değişirse:** Tüm aktif sorulara uygulanır; `başarı >= yeni N` olanlar Tamamlandı'ya geçer. N artırılırsa zaten Tamamlanan sorular tamamlanmış kalır (aktife dönmez).
 - **Tamamlanan soru** istenirse "Tekrar aktif et" ile başarı 0'a döner ve yarına planlanır.
@@ -76,7 +77,8 @@ Tüm hesaplar `src/domain/spacedRepetition.ts` içinde saf fonksiyon olarak yaz�
 4. Son işlem için **Geri al**.
 5. Oturum sonunda özet: kaç soru, kaçı çözüldü, kaçı tamamlandı.
 
-Oturum kaynakları: "Bugün tekrar edilecekler" (tümü), bir ders/konu, ya da serbest çalışma.
+Oturum kaynakları: "Bugün tekrar edilecekler" (tümü), bir ders/konu (ders seçilince konuları dahil), ya da serbest çalışma (klasördeki tüm aktif sorular). Sıra: en uzun bekleyen önce.
+Geri al birden çok kez kullanılabilir; sorunun önceki durumu geri yüklenir ve tekrar kaydı silinir.
 
 ## 7. Soru listesi ve görünüm
 Klasör içinde iki sekme: **Aktif** ve **Tamamlanan**.
@@ -91,7 +93,8 @@ Günü geçmiş sorunun tekrar günü de "Bugün" yazılır.
 - "Merhaba {isim}"
 - Sınav geri sayımı ("YKS'ye 247 gün") — tarih girildiyse
 - **"Bugün tekrar edilecek: 12 soru"** kartı → Tekrara başla
-- Seri: "6 gündür üst üste tekrar yapıyorsun"
+- Seri: "6 gündür üst üste tekrar yapıyorsun". Serbest çalışma dahil, en az bir tekrar yapılan her gün sayılır; bugün henüz tekrar yoksa seri dünden devam eder (gün bitince bozulur).
+- Geri sayım sınav günü "… bugün, başarılar!" olur, tarih geçince gizlenir.
 - Hızlı soru ekleme butonu
 
 ## 9. İstatistik

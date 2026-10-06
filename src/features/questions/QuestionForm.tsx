@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { router, Stack, useNavigation } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Pressable, ScrollView, View } from 'react-native';
 
@@ -108,14 +108,28 @@ export function QuestionForm({ mode }: { mode: QuestionFormMode }) {
     }
   };
 
+  // Ekranın açılış animasyonu bitti mi? Animasyon sürerken uyarı penceresi açmak
+  // iOS'ta ekranın sunumunu yarıda kesebilir.
+  const navigation = useNavigation();
+  const [presented, setPresented] = useState(false);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('transitionEnd' as never, () => setPresented(true));
+    // Olay gelmezse (ör. animasyonsuz açılış) yedek süre.
+    const fallback = setTimeout(() => setPresented(true), 700);
+    return () => {
+      unsubscribe();
+      clearTimeout(fallback);
+    };
+  }, [navigation]);
+
   // Yeni soruda form açılınca doğrudan fotoğraf seçimine geç.
   useEffect(() => {
-    if (loaded && mode.kind === 'new' && !autoPromptDone.current) {
+    if (loaded && presented && mode.kind === 'new' && !autoPromptDone.current) {
       autoPromptDone.current = true;
       addQuestionPhoto();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded]);
+  }, [loaded, presented]);
 
   const chooseFolder = async () => {
     const folder = await pickFolder(folderId);

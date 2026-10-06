@@ -8,7 +8,7 @@ import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { HeaderButton } from '@/components/HeaderButton';
-import { deleteQuestion, getQuestion, setSolutionImage } from '@/db/questions';
+import { deleteQuestion, getQuestion, reactivateQuestion, setSolutionImage } from '@/db/questions';
 import { useDatabase } from '@/db/useDatabase';
 import { capturePhoto } from '@/features/questions/photoFlow';
 import { QuestionBadges } from '@/features/questions/QuestionBadges';
@@ -156,6 +156,25 @@ export default function QuestionDetailScreen() {
           )}
         </View>
 
+        {question.completed_at ? (
+          <Button
+            title="Tekrar aktif et"
+            variant="secondary"
+            accessibilityHint="Başarı sıfırlanır ve soru yarın tekrar edilir"
+            onPress={() =>
+              Alert.alert('Soru yeniden aktif edilsin mi?', 'Başarı sayısı sıfırlanır ve soru yarın tekrar karşına çıkar.', [
+                { text: 'Vazgeç', style: 'cancel' },
+                {
+                  text: 'Aktif et',
+                  onPress: async () => {
+                    await reactivateQuestion(db, question.id, today(), new Date().toISOString());
+                    reload();
+                  },
+                },
+              ])
+            }
+          />
+        ) : null}
         <Button title="Soruyu sil" variant="destructive" onPress={confirmDelete} />
       </ScrollView>
     </>

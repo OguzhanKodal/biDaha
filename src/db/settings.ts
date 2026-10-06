@@ -53,3 +53,10 @@ export async function devResetAllData(db: Database): Promise<void> {
     );
   });
 }
+
+/** SADECE GELİŞTİRME: tüm aktif soruları bugün tekrar edilecek hale getirir (tekrar ekranını denemek için). */
+export async function devMakeAllDue(db: Database, today: string): Promise<number> {
+  if (!__DEV__) throw new Error('Sadece geliştirme sürümünde kullanılabilir.');
+  const result = await db.runAsync('UPDATE questions SET next_review_date = ? WHERE completed_at IS NULL', [today]);
+  return result.changes;
+}

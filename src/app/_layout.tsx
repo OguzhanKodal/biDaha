@@ -48,6 +48,7 @@ function RootStack() {
       <Stack screenOptions={{ ...stackOptions, headerShown: false }}>
         <Stack.Protected guard={onboardingDone}>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="review" options={{ presentation: 'fullScreenModal', gestureEnabled: false }} />
           <Stack.Screen name="question/new" options={{ presentation: 'fullScreenModal', headerShown: true }} />
           <Stack.Screen name="question/edit" options={{ presentation: 'fullScreenModal', headerShown: true }} />
           <Stack.Screen name="question/[id]" options={{ headerShown: true, title: 'Soru' }} />

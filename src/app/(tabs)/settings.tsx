@@ -4,9 +4,10 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ScreenScrollView } from '@/components/ScreenScrollView';
-import { devResetAllData } from '@/db/settings';
+import { devMakeAllDue, devResetAllData } from '@/db/settings';
 import { useDatabase } from '@/db/useDatabase';
 import { useSettings } from '@/features/settings/SettingsProvider';
+import { today } from '@/lib/date';
 import { deleteAllPhotoFiles } from '@/lib/photos';
 import { useTheme } from '@/theme';
 
@@ -41,6 +42,14 @@ export default function SettingsScreen() {
           <AppText variant="caption" color="textSecondary">
             Sadece geliştirme sürümünde görünür.
           </AppText>
+          <Button
+            title="Tüm aktif soruları bugüne çek"
+            variant="secondary"
+            onPress={async () => {
+              const n = await devMakeAllDue(db, today());
+              Alert.alert('Hazır', `${n} soru bugün tekrar edilecek.`);
+            }}
+          />
           <Button title="Verileri sıfırla, onboarding'e dön" variant="destructive" onPress={confirmDevReset} />
         </View>
       ) : null}

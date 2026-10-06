@@ -1,6 +1,8 @@
 import { initialSchedule, type QuestionSort, type QuestionStatusFilter } from '@/domain/questions';
 import type { LocalDate } from '@/lib/date';
 
+import { reactivatedState } from '@/domain/spacedRepetition';
+
 import type { Database } from './database';
 import type { AnswerChoice, QuestionRow, Timestamp } from './types';
 
@@ -92,9 +94,9 @@ export type QuestionDetail = QuestionRow & {
 
 const TAG_SEPARATOR = '\u001f';
 
-type TagAggregates = { tag_ids_csv: string | null; tag_names_joined: string | null };
+export type TagAggregates = { tag_ids_csv: string | null; tag_names_joined: string | null };
 
-function splitTags<T extends TagAggregates>(row: T): Omit<T, keyof TagAggregates> & { tag_ids: number[]; tag_names: string[] } {
+export function splitTags<T extends TagAggregates>(row: T): Omit<T, keyof TagAggregates> & { tag_ids: number[]; tag_names: string[] } {
   const { tag_ids_csv, tag_names_joined, ...rest } = row;
   return {
     ...rest,
@@ -103,7 +105,7 @@ function splitTags<T extends TagAggregates>(row: T): Omit<T, keyof TagAggregates
   };
 }
 
-const TAG_COLUMNS = `
+export const TAG_COLUMNS = `
   (SELECT GROUP_CONCAT(t.id) FROM (
      SELECT et.id FROM question_tags qt JOIN error_tags et ON et.id = qt.tag_id
      WHERE qt.question_id = q.id ORDER BY et.is_default DESC, et.id) t) AS tag_ids_csv,
@@ -206,4 +208,14 @@ export async function listAllPhotoPaths(db: Database): Promise<Set<string>> {
     [],
   );
   return new Set(rows.map((r) => r.path));
+}
+
+/** Tamamlanan soruyu yeniden aktif eder: başarı 0, yarına planlı (SPEC §5). */
+export async function reactivateQuestion(db: Database, id: number, today: LocalDate, now: Timestamp): Promise<void> {
+  const state = reactivatedState(today);
+  await db.runAsync(
+    `UPDATE questions SET success_count = ?, next_review_date = ?, last_result = ?, completed_at = ?, updated_at = ?
+     WHERE id = ?`,
+    [state.success_count, state.next_review_date, state.last_result, state.completed_at, now, id],
+  );
 }
