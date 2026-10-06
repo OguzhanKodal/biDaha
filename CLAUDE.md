@@ -2,7 +2,7 @@
 
 ## Proje özeti
 Uygulamanın adı **biDaha** (yazımı her yerde tam olarak böyle: küçük "b", büyük "D").
-Teknik kimlik: slug `bidaha`, iOS bundle ID `com.<geliştirici>.bidaha` (`app.json` içinde).
+Teknik kimlik: slug `bidaha`, iOS bundle ID `com.kodal.bidaha` (`app.json` içinde). Web desteklenmez (`platforms: ios, android`).
 
 YKS, DGS, KPSS gibi sınavlara hazırlananlar için **yanlış soru defteri** uygulaması (sadece iPhone, ileride Android olabilir).
 Kullanıcı çözemediği sorunun fotoğrafını çeker, isteğe bağlı olarak çözüm fotoğrafı, doğru şık, hata nedeni etiketi ve not ekler.

@@ -3,12 +3,12 @@
 Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x]` yap, simülatörde dene, sonra git commit at.
 
 ## Faz 0 — Temel kurulum
-- [ ] `app.json`: name "biDaha", slug "bidaha", iOS bundleIdentifier `com.<geliştirici>.bidaha` (geliştirici adını kullanıcıya sor)
-- [ ] Expo projesini temizle (örnek ekranları kaldır), klasör yapısını CLAUDE.md'ye göre oluştur
-- [ ] TypeScript strict, ESLint, Jest (jest-expo) kurulumu
-- [ ] `src/theme/` — renkler (açık/koyu), yazı boyutları, aralıklar
-- [ ] expo-sqlite kurulumu, migration sistemi, ilk şema (SPEC §13)
-- [ ] Hata nedeni etiketleri ve sınav ön ayarları (`src/domain/examPresets.ts`)
+- [x] `app.json`: name "biDaha", slug "bidaha", iOS bundleIdentifier `com.kodal.bidaha`
+- [x] Expo projesini temizle (örnek ekranları kaldır), klasör yapısını CLAUDE.md'ye göre oluştur
+- [x] TypeScript strict, ESLint, Jest (jest-expo) kurulumu
+- [x] `src/theme/` — renkler (açık/koyu), yazı boyutları, aralıklar
+- [x] expo-sqlite kurulumu, migration sistemi, ilk şema (SPEC §13)
+- [x] Hata nedeni etiketleri ve sınav ön ayarları (`src/domain/examPresets.ts`)
 
 ## Faz 1 — Onboarding ve klasörler
 - [ ] Onboarding: isim, sınav, tekrar sayısı, isteğe bağlı sınav tarihi (SPEC §2)
@@ -20,6 +20,7 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [ ] Kamera ve galeriden fotoğraf seçme
 - [ ] Kırpma + döndürme + sıkıştırma, uygulama klasörüne kaydetme (SPEC §4)
 - [ ] Soru ekleme formu: çözüm fotoğrafı, doğru şık, etiketler, not, kaynak, klasör
+- [ ] Kullanıcının kendi hata nedeni etiketini eklemesi (SPEC §4)
 - [ ] Soru listesi (Aktif/Tamamlanan sekmeleri) ve soru detay/düzenleme ekranı (SPEC §7)
 - [ ] Soru silme (fotoğraf dosyalarıyla birlikte, onaylı)
 

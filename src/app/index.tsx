@@ -1,98 +1,106 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+// Faz 0 geçici ekranı: kurulumun (tema + veritabanı) çalıştığını gösterir. Faz 1'de sekmelerle değişecek.
+import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { listErrorTags } from '@/db/errorTags';
+import { getSchemaVersion } from '@/db/migrate';
+import { getSettings } from '@/db/settings';
+import type { ErrorTagRow, SettingsRow } from '@/db/types';
+import { examLabels } from '@/domain/examPresets';
+import { today } from '@/lib/date';
+import { folderColors, useTheme } from '@/theme';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
+type SetupInfo = {
+  schemaVersion: number;
+  settings: SettingsRow;
+  tags: ErrorTagRow[];
+};
+
+export default function SetupCheckScreen() {
+  const db = useSQLiteContext();
+  const { colors, spacing, radius, typography, folderColor, scheme } = useTheme();
+  const [info, setInfo] = useState<SetupInfo | null>(null);
+
+  useEffect(() => {
+    Promise.all([getSchemaVersion(db), getSettings(db), listErrorTags(db)]).then(
+      ([schemaVersion, settings, tags]) => setInfo({ schemaVersion, settings, tags }),
     );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+  }, [db]);
+
+  const card = { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, gap: spacing.sm };
+  const label = [typography.callout, { color: colors.textSecondary }];
+  const value = [typography.body, { color: colors.text }];
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <SafeAreaView style={styles.flex}>
+      <ScrollView contentContainerStyle={{ padding: spacing.lg, gap: spacing.lg }}>
+        <Text style={[typography.largeTitle, { color: colors.text }]}>biDaha</Text>
+        <Text style={label}>Kurulum kontrolü · {scheme === 'dark' ? 'Koyu mod' : 'Açık mod'}</Text>
+
+        <View style={card}>
+          <Text style={[typography.heading, { color: colors.text }]}>Veritabanı</Text>
+          {info ? (
+            <>
+              <Text style={value}>Şema sürümü: {info.schemaVersion}</Text>
+              <Text style={value}>Tekrar sayısı: {info.settings.target_repetitions}</Text>
+              <Text style={value}>
+                Sınav: {info.settings.exam_type ? examLabels[info.settings.exam_type] : 'seçilmedi'}
+              </Text>
+              <Text style={value}>Bugün: {today()}</Text>
+            </>
+          ) : (
+            <Text style={label}>Yükleniyor…</Text>
+          )}
+        </View>
+
+        <View style={card}>
+          <Text style={[typography.heading, { color: colors.text }]}>
+            Hata nedeni etiketleri ({info?.tags.length ?? 0})
+          </Text>
+          {info?.tags.map((tag) => (
+            <Text key={tag.id} style={value}>
+              • {tag.name}
+            </Text>
+          ))}
+        </View>
+
+        <View style={card}>
+          <Text style={[typography.heading, { color: colors.text }]}>Renkler</Text>
+          <View style={styles.row}>
+            <Badge text="Çözdüm" fg={colors.success} bg={colors.successSoft} />
+            <Badge text="Çözemedim" fg={colors.danger} bg={colors.dangerSoft} />
+          </View>
+          <View style={[styles.row, { gap: spacing.sm }]}>
+            {folderColors.map((key) => (
+              <View
+                key={key}
+                accessibilityLabel={key}
+                style={{ width: 28, height: 28, borderRadius: radius.full, backgroundColor: folderColor(key) }}
+              />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
-export default function HomeScreen() {
+function Badge({ text, fg, bg }: { text: string; fg: string; bg: string }) {
+  const { spacing, radius, typography } = useTheme();
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+    <Text
+      style={[
+        typography.callout,
+        { color: fg, backgroundColor: bg, paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: radius.full, overflow: 'hidden' },
+      ]}>
+      {text}
+    </Text>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+  flex: { flex: 1 },
+  row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
 });

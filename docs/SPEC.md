@@ -26,6 +26,7 @@ Hazır dersler:
 - **Diğer:** boş başlar
 
 Sınav sonradan değiştirilirse mevcut klasörler silinmez; yeni sınavın eksik dersleri eklenmesi önerilir.
+Klasör renkleri `src/theme/` paletinden seçilir; veritabanında renk kodu değil palet anahtarı (ör. `blue`) tutulur, böylece açık/koyu modda farklı ton gösterilebilir.
 İçinde soru olan klasör silinirken onay istenir (sorular silinsin mi / başka klasöre mi taşınsın).
 
 Klasör kartında: ad, toplam soru, bugün tekrar edilecek sayısı, tamamlanma oranı.
@@ -42,6 +43,7 @@ Klasör kartında: ad, toplam soru, bugün tekrar edilecek sayısı, tamamlanma 
 | Klasör | Evet | Ders ya da konu; içinde bulunulan klasör varsayılan |
 
 **Hata nedeni etiketleri:** Dikkatsizlik, Bilgi eksikliği, Süre yetmedi, Soruyu yanlış okuma, İşlem hatası, Yorumlayamadım.
+Kullanıcı kendi etiketlerini de ekleyebilir (hazır etiketler `is_default = 1`). Ad boş olamaz, en fazla 40 karakter, mevcut bir etiketle aynı olamaz (büyük/küçük harf farkı gözetilmez).
 
 **Fotoğraf işleme:** Uzun kenar en fazla ~1600 px, JPEG ~%70 kalite. Dosyalar uygulamanın kendi klasöründe tutulur, galeriye kaydedilmez.
 
@@ -55,7 +57,7 @@ Kullanıcının seçtiği tekrar sayısı = **N** (varsayılan 5). Aralıklar (g
 - **Sola kaydır (Çözemedim):** başarı sayılmaz (değişmez), `son sonuç = başarısız`, `sonraki tekrar = yarın`
 - **Erken tekrar:** Günü gelmemiş soru klasörden açılıp çalışılabilir ama sayaca sayılmaz ("serbest çalışma"). Bu, aynı gün art arda 5 tekrarla soruyu bitirmeyi önler.
 - **Gecikme:** Günü geçmiş sorular "Bugün" listesinde kalır; ceza yok.
-- **N değişirse:** Tüm aktif sorulara uygulanır; `başarı >= yeni N` olanlar Tamamlandı'ya geçer.
+- **N değişirse:** Tüm aktif sorulara uygulanır; `başarı >= yeni N` olanlar Tamamlandı'ya geçer. N artırılırsa zaten Tamamlanan sorular tamamlanmış kalır (aktife dönmez).
 - **Tamamlanan soru** istenirse "Tekrar aktif et" ile başarı 0'a döner ve yarına planlanır.
 
 Tüm hesaplar `src/domain/spacedRepetition.ts` içinde saf fonksiyon olarak yazılır ve testlenir.
@@ -110,6 +112,14 @@ Metin: "Bugün 8 soru seni bekliyor". Bekleyen soru yoksa bildirim gönderilmez.
 - **error_tags:** id, name, is_default
 - **question_tags:** question_id, tag_id
 - **review_logs:** id, question_id, reviewed_at, review_date, result (success/fail), counted (bool — serbest çalışma için false)
+
+**Uygulama kuralları:**
+- `settings` tek satırlık tablodur (`id = 1`), ilk migration'da varsayılanlarla oluşturulur (N = 5, bildirim kapalı, saat 20:00).
+- `*_date` sütunları yerel gün (`YYYY-MM-DD`), `*_at` sütunları ISO 8601 zaman damgasıdır.
+- Fotoğraf sütunları uygulama klasörüne göre **göreli yol** tutar (iOS uygulama klasörünün mutlak yolu güncellemelerde değişebilir).
+- `folders.color` palet anahtarıdır. Klasör, içinde soru ya da alt konu varken veritabanı seviyesinde silinemez (`RESTRICT`); silme akışı uygulamada onayla yapılır.
+- Soru silinince `question_tags` ve `review_logs` kayıtları da silinir (`CASCADE`); silinen soru istatistiklerden düşer.
+- Şema sürümü `PRAGMA user_version` ile tutulur; migration'lar `src/db/migrations/` altındadır.
 
 ## 14. Kapsam dışı (şimdilik)
 Hesap/bulut senkronu, yapay zekâ çözümü, OCR, PDF dışa aktarma, karışık tekrar modu, arama, iPad/Android optimizasyonu, Apple Watch.
