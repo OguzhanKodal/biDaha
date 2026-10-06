@@ -15,6 +15,7 @@ import { QuestionBadges } from '@/features/questions/QuestionBadges';
 import { useSettings } from '@/features/settings/SettingsProvider';
 import { today } from '@/lib/date';
 import { deletePhotoFiles, persistPhoto, photoUri } from '@/lib/photos';
+import { syncReminders } from '@/lib/reminders';
 import { useFocusedData } from '@/lib/useFocusedData';
 import { useTheme } from '@/theme';
 
@@ -67,6 +68,7 @@ export default function QuestionDetailScreen() {
             // Önce kayıt, sonra dosyalar (Kural 1).
             const photos = await deleteQuestion(db, question.id);
             deletePhotoFiles(photos);
+            syncReminders(db);
             router.back();
           } catch (e) {
             Alert.alert('Silinemedi', e instanceof Error ? e.message : String(e));
@@ -168,6 +170,7 @@ export default function QuestionDetailScreen() {
                   text: 'Aktif et',
                   onPress: async () => {
                     await reactivateQuestion(db, question.id, today(), new Date().toISOString());
+                    syncReminders(db);
                     reload();
                   },
                 },

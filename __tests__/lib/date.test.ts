@@ -1,4 +1,4 @@
-import { addDays, daysBetween, isLocalDate, toLocalDate, today } from '@/lib/date';
+import { addDays, daysBetween, formatLongDate, isLocalDate, toLocalDate, today } from '@/lib/date';
 
 describe('toLocalDate / today', () => {
   it('yerel günü YYYY-MM-DD olarak verir', () => {
@@ -49,5 +49,12 @@ describe('daysBetween', () => {
     expect(daysBetween('2026-10-06', '2026-10-06')).toBe(0);
     expect(daysBetween('2026-10-07', '2026-10-06')).toBe(-1);
     expect(daysBetween('2026-10-06', '2027-06-20')).toBe(257);
+  });
+});
+
+describe('formatLongDate', () => {
+  it('Türkçe ay adıyla yazar', () => {
+    expect(formatLongDate('2027-06-20')).toBe('20 Haziran 2027');
+    expect(formatLongDate('2026-01-05')).toBe('5 Ocak 2026');
   });
 });

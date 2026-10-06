@@ -16,6 +16,7 @@ export default function OnboardingLayout() {
         <Stack.Screen name="exam" />
         <Stack.Screen name="repetitions" />
         <Stack.Screen name="exam-date" />
+        <Stack.Screen name="reminder" />
       </Stack>
     </OnboardingDraftProvider>
   );

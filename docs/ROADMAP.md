@@ -33,8 +33,8 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Ana ekran: selamlama, "Bugün tekrar edilecek" kartı, geri sayım, seri (SPEC §8)
 
 ## Faz 4 — Ayarlar ve bildirim
-- [ ] Ayarlar ekranı (SPEC §12), N değişince mevcut soruların güncellenmesi
-- [ ] Günlük yerel bildirim, saat seçimi, izin akışı (SPEC §10)
+- [x] Ayarlar ekranı (SPEC §12), N değişince mevcut soruların güncellenmesi
+- [x] Günlük yerel bildirim, saat seçimi, izin akışı (SPEC §10)
 
 ## Faz 5 — Yedekleme
 - [ ] Yedek dosyası formatı (sürüm numaralı) — karar gerekirse önce sor (native zip paketi Expo Go'da çalışmayabilir)

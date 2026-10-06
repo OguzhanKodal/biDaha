@@ -1,34 +1,40 @@
-import { Stack } from 'expo-router';
+import { Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { AppState, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AppText } from '@/components/AppText';
 import { DATABASE_NAME, initDatabase } from '@/db/client';
+import { useDatabase } from '@/db/useDatabase';
 import { SettingsProvider, useSettings } from '@/features/settings/SettingsProvider';
+import { configureNotificationHandler, syncReminders } from '@/lib/reminders';
 import { useTheme } from '@/theme';
-import { useStackScreenOptions } from '@/theme/navigation';
+import { useNavigationTheme, useStackScreenOptions } from '@/theme/navigation';
 
 SplashScreen.preventAutoHideAsync();
+configureNotificationHandler();
 
 export default function RootLayout() {
   const [dbError, setDbError] = useState<Error | null>(null);
+  const navigationTheme = useNavigationTheme();
 
   return (
-    <GestureHandlerRootView style={styles.flex}>
-      {dbError ? (
-        <DatabaseErrorScreen error={dbError} />
-      ) : (
-        <SQLiteProvider databaseName={DATABASE_NAME} onInit={initDatabase} onError={setDbError}>
-          <SettingsProvider onError={setDbError}>
-            <RootStack />
-          </SettingsProvider>
-        </SQLiteProvider>
-      )}
-    </GestureHandlerRootView>
+    <ThemeProvider value={navigationTheme}>
+      <GestureHandlerRootView style={styles.flex}>
+        {dbError ? (
+          <DatabaseErrorScreen error={dbError} />
+        ) : (
+          <SQLiteProvider databaseName={DATABASE_NAME} onInit={initDatabase} onError={setDbError}>
+            <SettingsProvider onError={setDbError}>
+              <RootStack />
+            </SettingsProvider>
+          </SQLiteProvider>
+        )}
+      </GestureHandlerRootView>
+    </ThemeProvider>
   );
 }
 
@@ -41,6 +47,8 @@ function RootStack() {
   useEffect(() => {
     SplashScreen.hideAsync();
   }, []);
+
+  useReminderSync(onboardingDone);
 
   return (
     <>
@@ -65,6 +73,19 @@ function RootStack() {
       </Stack>
     </>
   );
+}
+
+/** Bildirim planı: açılışta, uygulama öne/arkaya geçtiğinde güncel soru sayılarıyla yeniden kurulur. */
+function useReminderSync(enabled: boolean) {
+  const db = useDatabase();
+  useEffect(() => {
+    if (!enabled) return;
+    syncReminders(db);
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active' || state === 'background') syncReminders(db);
+    });
+    return () => subscription.remove();
+  }, [db, enabled]);
 }
 
 /** Veritabanı açılamazsa veya migration başarısız olursa: veriye dokunmadan bilgi ver. */

@@ -16,6 +16,7 @@ import { sessionSummary, type ReviewResult, type SessionResult } from '@/domain/
 import { ReviewCard } from '@/features/review/ReviewCard';
 import { useSettings } from '@/features/settings/SettingsProvider';
 import { today } from '@/lib/date';
+import { syncReminders } from '@/lib/reminders';
 import { minTouchSize, useTheme } from '@/theme';
 
 const SWIPE_THRESHOLD = 110;
@@ -56,6 +57,9 @@ export default function ReviewScreen() {
         router.back();
       });
   }, [db, isFree, folderId]);
+
+  // Oturum kapanınca bildirim planı yeni sayılarla güncellenir (sorular bittiyse hatırlatmaya döner).
+  useEffect(() => () => void syncReminders(db), [db]);
 
   const current = items?.[index] ?? null;
   const finished = items !== null && items.length > 0 && index >= items.length;

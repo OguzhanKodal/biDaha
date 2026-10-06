@@ -5,6 +5,7 @@ import { deleteFolder, deleteFolderWithQuestions, getFolderDeleteInfo } from '@/
 import type { FolderRow } from '@/db/types';
 import { useDatabase } from '@/db/useDatabase';
 import { deletePhotoFiles } from '@/lib/photos';
+import { syncReminders } from '@/lib/reminders';
 
 /**
  * Silme akışı (SPEC §3):
@@ -28,6 +29,7 @@ export function useDeleteFolder(onDeleted: () => void) {
             try {
               const photos = await deleteFolderWithQuestions(db, folder.id);
               deletePhotoFiles(photos);
+              syncReminders(db);
               onDeleted();
             } catch (e) {
               Alert.alert('Silinemedi', e instanceof Error ? e.message : String(e));

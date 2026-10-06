@@ -8,11 +8,12 @@ Hedef sınavlar: YKS, DGS, KPSS (+ "Diğer").
 **Gizlilik:** Hesap yok, internet gerekmez, tüm veriler telefonda.
 
 ## 2. İlk açılış (onboarding)
-Kısa ve atlanamaz 3 adım + 1 isteğe bağlı adım:
+Kısa ve atlanamaz 3 adım + 2 isteğe bağlı adım:
 1. **İsim** (sadece selamlama için: "Merhaba Ayşe")
 2. **Hazırlandığı sınav:** YKS / DGS / KPSS / Diğer → hazır klasörleri belirler
 3. **Bir soru kaç kez tekrar edilsin:** 3–10 arası seçici, varsayılan 5
 4. *(İsteğe bağlı)* **Sınav tarihi** → ana ekranda geri sayım
+5. **Günlük hatırlatma saati** (varsayılan 20:00) → bildirim izni bu adımda istenir; "Hatırlatma olmadan başla" seçilebilir
 Hepsi sonradan Ayarlar'dan değiştirilebilir.
 İsim zorunlu (en fazla 30 karakter). Sınav tarihi bugünden önce olamaz. Cevaplar son adımda tek seferde kaydedilir; yarıda kalan onboarding baştan başlar.
 
@@ -104,9 +105,12 @@ Günü geçmiş sorunun tekrar günü de "Bugün" yazılır.
 Tekrar kayıtları (`review_logs`) tutulur; istatistikler buradan hesaplanır.
 
 ## 10. Bildirim
-Günlük yerel hatırlatma, saati Ayarlar'dan seçilir (varsayılan 20:00), kapatılabilir.
-Metin: "Bugün 8 soru seni bekliyor". Bekleyen soru yoksa bildirim gönderilmez.
-İzin, ilk kez bildirim açılırken istenir (onboarding'de değil).
+Günlük yerel hatırlatma; saat onboarding'in son adımında seçilir (varsayılan 20:00), Ayarlar'dan değiştirilebilir ve kapatılabilir.
+Her gün seçilen saatte bir bildirim gider:
+- O gün bekleyen soru varsa: "Bugün 8 soru seni bekliyor"
+- Yoksa (o günün soruları bittiyse ya da hiç yoksa): "Bugün tekrar edilecek soru kalmadı. Çözemediğin bir soru varsa eklemeyi unutma."
+İzin onboarding'in hatırlatma adımında (ya da Ayarlar'da ilk açılışta) istenir; reddedilirse telefon Ayarlar'ına yönlendirilir.
+Uygulama: Yerel bildirimin metni zamanlandığında sabitlenir. Bu yüzden önümüzdeki 14 gün için ayrı bildirimler kurulur ve plan uygulama açılıp kapandıkça, tekrar oturumu bittiğinde, soru eklenip silindiğinde ve ayar değişince yeniden hesaplanır. Uygulama 14 gün hiç açılmazsa bildirimler durur.
 
 ## 11. Yedekleme
 - **Dışa aktar:** Veritabanı + tüm fotoğraflar tek bir yedek dosyası olarak; paylaşım menüsüyle Dosyalar, AirDrop, Drive vb.ye kaydedilir.
@@ -116,6 +120,9 @@ Metin: "Bugün 8 soru seni bekliyor". Bekleyen soru yoksa bildirim gönderilmez.
 
 ## 12. Ayarlar
 İsim, sınav, tekrar sayısı (N), sınav tarihi, bildirim (aç/kapa + saat), yedekle/geri yükle, klasör yönetimi, tüm verileri sil (çift onaylı), hakkında.
+- N düşürülürse başarısı yeni N'e ulaşan sorular tamamlanır; etkilenen soru varsa önce sayısıyla onay istenir.
+- Sınav değişince eksik dersler tek uyarıda listelenip eklenmesi önerilir; mevcut klasörler silinmez.
+- Tüm verileri sil: iki ayrı onay; önce kayıtlar, sonra fotoğraflar silinir, onboarding'e dönülür.
 
 ## 13. Veri modeli (taslak)
 - **settings:** name, exam_type, target_repetitions, exam_date?, notifications_enabled, notification_time, last_backup_at?, onboarding_done

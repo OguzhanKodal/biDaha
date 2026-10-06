@@ -45,3 +45,24 @@ export function daysBetween(from: LocalDate, to: LocalDate): number {
   const ms = parseLocalDate(to).getTime() - parseLocalDate(from).getTime();
   return Math.round(ms / 86_400_000);
 }
+
+const MONTHS_TR = [
+  'Ocak',
+  'Şubat',
+  'Mart',
+  'Nisan',
+  'Mayıs',
+  'Haziran',
+  'Temmuz',
+  'Ağustos',
+  'Eylül',
+  'Ekim',
+  'Kasım',
+  'Aralık',
+];
+
+/** "20 Haziran 2027" */
+export function formatLongDate(value: LocalDate): string {
+  const date = parseLocalDate(value);
+  return `${date.getDate()} ${MONTHS_TR[date.getMonth()]} ${date.getFullYear()}`;
+}

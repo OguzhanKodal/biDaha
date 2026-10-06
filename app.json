@@ -42,7 +42,8 @@
           "cameraPermission": "biDaha, çözemediğin soruların fotoğrafını çekebilmek için kameraya erişir. Fotoğraflar telefonundan çıkmaz.",
           "microphonePermission": false
         }
-      ]
+      ],
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true,

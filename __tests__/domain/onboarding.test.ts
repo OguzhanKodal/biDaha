@@ -48,7 +48,17 @@ describe('finalizeDraft', () => {
       exam: 'YKS',
       repetitions: 5,
       examDate: null,
+      reminderTime: '20:00',
+      remindersEnabled: false,
     });
+    expect(finalizeDraft({ ...emptyDraft, name: 'Ayşe', exam: 'YKS', reminderTime: '07:30' }, today, true)).toMatchObject({
+      reminderTime: '07:30',
+      remindersEnabled: true,
+    });
+  });
+
+  it('geçersiz hatırlatma saatini kabul etmez', () => {
+    expect(finalizeDraft({ ...emptyDraft, name: 'Ayşe', exam: 'YKS', reminderTime: '25:00' }, today)).toBeNull();
   });
 
   it('geçmiş sınav tarihini kabul etmez', () => {

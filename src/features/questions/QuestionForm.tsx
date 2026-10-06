@@ -21,6 +21,7 @@ import {
 } from '@/domain/questions';
 import { today } from '@/lib/date';
 import { deletePhotoFiles, persistPhoto, photoUri, type TempPhoto } from '@/lib/photos';
+import { syncReminders } from '@/lib/reminders';
 import { minTouchSize, useTheme } from '@/theme';
 
 import { capturePhoto, pickFolder } from './photoFlow';
@@ -191,6 +192,7 @@ export function QuestionForm({ mode }: { mode: QuestionFormMode }) {
           deletePhotoFiles([old.questionImage, old.solutionImage].filter((p): p is string => !!p && !stillUsed.has(p)));
         }
       }
+      syncReminders(db);
       router.back();
     } catch (e) {
       // Kayıt başarısız: bu denemede kopyalanan dosyalar hiçbir kayda bağlı değil.

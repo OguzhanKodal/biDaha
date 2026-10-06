@@ -6,7 +6,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { useTheme } from '@/theme';
 
-export const onboardingStepCount = 4;
+export const onboardingStepCount = 5;
 
 type Props = {
   step: number;

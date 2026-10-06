@@ -2,6 +2,7 @@ import { daysBetween, type LocalDate } from '@/lib/date';
 
 import type { ExamType } from './examPresets';
 import { validateName } from './names';
+import { defaultReminderTime, isValidTime } from './reminders';
 
 export const maxUserNameLength = 30;
 
@@ -14,6 +15,8 @@ export type OnboardingDraft = {
   exam: ExamType | null;
   repetitions: number;
   examDate: LocalDate | null;
+  /** Günlük hatırlatma saati (HH:mm) */
+  reminderTime: string;
 };
 
 export const emptyDraft: OnboardingDraft = {
@@ -21,6 +24,7 @@ export const emptyDraft: OnboardingDraft = {
   exam: null,
   repetitions: defaultRepetitions,
   examDate: null,
+  reminderTime: defaultReminderTime,
 };
 
 export type UserNameError = 'empty' | 'tooLong';
@@ -44,16 +48,25 @@ export type CompletedOnboarding = {
   exam: ExamType;
   repetitions: number;
   examDate: LocalDate | null;
+  reminderTime: string;
+  remindersEnabled: boolean;
 };
 
 /** Taslak kaydedilmeye hazırsa temizlenmiş halini, değilse null döner. */
-export function finalizeDraft(draft: OnboardingDraft, today: LocalDate): CompletedOnboarding | null {
+export function finalizeDraft(
+  draft: OnboardingDraft,
+  today: LocalDate,
+  remindersEnabled = false,
+): CompletedOnboarding | null {
   if (validateUserName(draft.name) !== null || draft.exam === null) return null;
   if (draft.examDate !== null && !isValidExamDate(draft.examDate, today)) return null;
+  if (!isValidTime(draft.reminderTime)) return null;
   return {
     name: draft.name.trim(),
     exam: draft.exam,
     repetitions: clampRepetitions(draft.repetitions),
     examDate: draft.examDate,
+    reminderTime: draft.reminderTime,
+    remindersEnabled,
   };
 }
