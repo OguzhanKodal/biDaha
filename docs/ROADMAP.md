@@ -17,13 +17,13 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Klasörler ekranı: ders listesi, konu alt seviyesi, ekle/düzenle/sil/sırala/renk (SPEC §3)
 
 ## Faz 2 — Soru ekleme
-- [ ] Kamera ve galeriden fotoğraf seçme
-- [ ] Kırpma + döndürme + sıkıştırma, uygulama klasörüne kaydetme (SPEC §4)
-- [ ] Soru ekleme formu: çözüm fotoğrafı, doğru şık, etiketler, not, kaynak, klasör
-- [ ] Kullanıcının kendi hata nedeni etiketini eklemesi (SPEC §4)
-- [ ] Soru listesi (Aktif/Tamamlanan sekmeleri) ve soru detay/düzenleme ekranı (SPEC §7)
-- [ ] Soru silme (fotoğraf dosyalarıyla birlikte, onaylı)
-- [ ] Klasör silmede "Sorularla birlikte sil" seçeneği (şimdilik sadece taşıma var)
+- [x] Kamera ve galeriden fotoğraf seçme
+- [x] Kırpma + döndürme + sıkıştırma, uygulama klasörüne kaydetme (SPEC §4)
+- [x] Soru ekleme formu: çözüm fotoğrafı, doğru şık, etiketler, not, kaynak, klasör
+- [x] Kullanıcının kendi hata nedeni etiketini eklemesi (SPEC §4)
+- [x] Soru listesi (Aktif/Tamamlanan sekmeleri) ve soru detay/düzenleme ekranı (SPEC §7)
+- [x] Soru silme (fotoğraf dosyalarıyla birlikte, onaylı)
+- [x] Klasör silmede "Sorularla birlikte sil" seçeneği (şimdilik sadece taşıma var)
 
 ## Faz 3 — Aralıklı tekrar (uygulamanın kalbi)
 - [ ] `src/domain/spacedRepetition.ts` + kapsamlı testler (SPEC §5 tüm kurallar)
@@ -51,7 +51,7 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [ ] Boş durumlar ("Henüz soru eklemedin"), yükleniyor durumları, hata mesajları
 - [ ] Karanlık mod ve küçük ekran (iPhone SE) kontrolü
 - [ ] Uygulama ikonu ve açılış ekranı (isim: biDaha)
-- [ ] Gerçek iPhone'da test (development build)
+- [ ] Gerçek iPhone'da test (development build) — kamera ile soru ekleme dahil (simülatörde kamera yok)
 - [ ] App Store için: gizlilik açıklaması ("veri toplanmaz"), ekran görüntüleri, EAS Build + Submit
 
 ## Sonraki fikirler (kapsam dışı)

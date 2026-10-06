@@ -40,8 +40,13 @@ src/
         [id].tsx        # Ders/konu içeriği
         edit.tsx        # Ders/konu ekle-düzenle (modal)
         move.tsx        # Silmeden önce soruları taşı (modal)
-    question/[id].tsx   # Soru detayı
-    question/new.tsx    # Soru ekleme
+    question/
+      new.tsx           # Soru ekleme (folderId parametresi isteğe bağlı)
+      edit.tsx          # Soru düzenleme (id)
+      [id].tsx          # Soru detayı
+      crop.tsx          # Serbest kırpma + döndürme (pendingResult ile sonuç döner)
+      photo.tsx         # Tam ekran fotoğraf, yakınlaştırma
+      pick-folder.tsx   # Klasör seçici (pendingResult)
     review.tsx          # Tekrar oturumu (kart + kaydırma)
   db/                   # Şema, migration'lar, sorgular (repository fonksiyonları)
   domain/               # Saf iş mantığı: aralıklı tekrar, istatistik, sınav ön ayarları
@@ -58,6 +63,8 @@ docs/                   # SPEC.md, ROADMAP.md, kararlar
    - Şema değişikliği yalnızca numaralı migration ile yapılır, mevcut migration'lar asla düzenlenmez.
    - Fotoğraf dosyası, veritabanı kaydı silinmeden önce silinmez; silme işlemleri onay ister.
    - Veritabanı değişikliklerinde `veritabani-degisikligi` skill'ini izle.
+   - Fotoğraflar `Documents/photos/`, veritabanında göreli yol. Tüm dosya işlemleri `src/lib/photos.ts` üzerinden.
+     Kayıtta: önce dosya, sonra kayıt (kayıt başarısızsa yeni dosyayı sil). Silmede: önce kayıt, sonra dosya.
    - Sorgular `src/db/database.ts` arayüzünü alır; yazmalarda `withTransactionAsync` kullan (`withExclusiveTransactionAsync` ayrı bağlantı açar, orada `foreign_keys` kapalıdır).
 2. **İş mantığı `src/domain/` içinde saf fonksiyon** olarak yazılır ve test edilir (özellikle aralıklı tekrar hesabı).
    Ekranlar hesaplama yapmaz, domain fonksiyonlarını çağırır.

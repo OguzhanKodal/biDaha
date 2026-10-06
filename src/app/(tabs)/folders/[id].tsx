@@ -8,6 +8,7 @@ import { HeaderButton } from '@/components/HeaderButton';
 import { getFolder } from '@/db/folders';
 import { useDatabase } from '@/db/useDatabase';
 import { FolderList, openFolderForm } from '@/features/folders/FolderList';
+import { QuestionSection } from '@/features/questions/QuestionSection';
 import { useFocusedData } from '@/lib/useFocusedData';
 import { useTheme } from '@/theme';
 
@@ -28,22 +29,7 @@ export default function FolderScreen() {
 
   const isSubject = folder.parent_id === null;
 
-  const questionsPlaceholder = (
-    <View style={{ marginTop: spacing.lg, gap: spacing.sm }}>
-      <AppText variant="heading" accessibilityRole="header">
-        Sorular
-      </AppText>
-      <EmptyState
-        icon="photo.on.rectangle"
-        title="Henüz soru yok"
-        message={
-          isSubject
-            ? 'Bu derse ya da konularına eklediğin sorular burada görünecek.'
-            : 'Bu konuya eklediğin sorular burada görünecek.'
-        }
-      />
-    </View>
-  );
+  const questions = <QuestionSection folderId={folder.id} />;
 
   return (
     <>
@@ -75,11 +61,11 @@ export default function FolderScreen() {
               Konular
             </AppText>
           }
-          footer={questionsPlaceholder}
+          footer={questions}
         />
       ) : (
         <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: spacing.lg }}>
-          {questionsPlaceholder}
+          {questions}
         </ScrollView>
       )}
     </>

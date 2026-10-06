@@ -34,7 +34,7 @@ export async function completeOnboarding(
 
 /**
  * SADECE GELİŞTİRME: tüm verileri silip ayarları varsayılana döndürür.
- * Fotoğraf dosyaları henüz yok (Faz 2); o zaman buraya dosya silme de eklenmeli.
+ * Fotoğraf dosyalarını çağıran taraf siler (deleteAllPhotoFiles), kayıtlar silindikten sonra.
  */
 export async function devResetAllData(db: Database): Promise<void> {
   if (!__DEV__) throw new Error('Sadece geliştirme sürümünde kullanılabilir.');

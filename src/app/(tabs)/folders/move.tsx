@@ -5,7 +5,7 @@ import { AppText } from '@/components/AppText';
 import { EmptyState } from '@/components/EmptyState';
 import { HeaderButton } from '@/components/HeaderButton';
 import { Icon } from '@/components/Icon';
-import { getFolder, getFolderDeleteInfo, listMoveTargets, moveQuestionsAndDeleteFolder } from '@/db/folders';
+import { getFolder, getFolderDeleteInfo, listFolderTree, moveQuestionsAndDeleteFolder } from '@/db/folders';
 import type { FolderRow } from '@/db/types';
 import { useDatabase } from '@/db/useDatabase';
 import { useFocusedData } from '@/lib/useFocusedData';
@@ -22,7 +22,7 @@ export default function MoveQuestionsScreen() {
     const [folder, info, targets] = await Promise.all([
       getFolder(db, folderId),
       getFolderDeleteInfo(db, folderId),
-      listMoveTargets(db, folderId),
+      listFolderTree(db, folderId),
     ]);
     return { folder, info, targets };
   });

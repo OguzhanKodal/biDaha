@@ -1,18 +1,11 @@
 import { Stack } from 'expo-router';
 
-import { useTheme } from '@/theme';
+import { useStackScreenOptions } from '@/theme/navigation';
 
 export default function FoldersLayout() {
-  const { colors } = useTheme();
+  const screenOptions = useStackScreenOptions();
   return (
-    <Stack
-      screenOptions={{
-        headerBackTitle: 'Geri',
-        headerTintColor: colors.accent,
-        headerTitleStyle: { color: colors.text },
-        headerLargeTitleStyle: { color: colors.text },
-        contentStyle: { backgroundColor: colors.background },
-      }}>
+    <Stack screenOptions={screenOptions}>
       <Stack.Screen name="index" options={{ title: 'Klasörler', headerLargeTitle: true }} />
       <Stack.Screen name="[id]" options={{ title: '' }} />
       <Stack.Screen name="edit" options={{ presentation: 'modal' }} />

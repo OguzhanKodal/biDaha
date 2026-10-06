@@ -137,14 +137,17 @@ export async function deleteFolder(db: Database, id: number): Promise<void> {
   });
 }
 
-/** Soru taşıma hedefleri: bu klasör ve konuları hariç tüm klasörler, ders › konu sırasıyla. */
-export async function listMoveTargets(db: Database, excludeId: number): Promise<FolderRow[]> {
+/**
+ * Tüm klasörler ders › konu sırasıyla (seçici listeler için).
+ * excludeId verilirse o klasör ve konuları hariç tutulur (soru taşıma hedefleri).
+ */
+export async function listFolderTree(db: Database, excludeId: number | null = null): Promise<FolderRow[]> {
   return db.getAllAsync<FolderRow>(
     `SELECT f.* FROM folders f
      LEFT JOIN folders p ON p.id = f.parent_id
-     WHERE f.id != ? AND f.parent_id IS NOT ?
+     WHERE ? IS NULL OR (f.id != ? AND f.parent_id IS NOT ?)
      ORDER BY COALESCE(p.sort_order, f.sort_order), COALESCE(p.id, f.id), f.parent_id IS NOT NULL, f.sort_order, f.id`,
-    [excludeId, excludeId],
+    [excludeId, excludeId, excludeId],
   );
 }
 
@@ -168,4 +171,37 @@ export async function moveQuestionsAndDeleteFolder(
     await db.runAsync('DELETE FROM folders WHERE parent_id = ?', [id]);
     await db.runAsync('DELETE FROM folders WHERE id = ?', [id]);
   });
+}
+
+/**
+ * Klasörü, konularını ve içlerindeki tüm soruları siler (tek transaction).
+ * Silinen soruların fotoğraf yollarını döner; dosyalar kayıt silindikten SONRA silinmeli.
+ */
+export async function deleteFolderWithQuestions(db: Database, id: number): Promise<string[]> {
+  let photos: string[] = [];
+  await db.withTransactionAsync(async () => {
+    const rows = await db.getAllAsync<{ question_image: string; solution_image: string | null }>(
+      `SELECT question_image, solution_image FROM questions
+       WHERE folder_id = ? OR folder_id IN (SELECT id FROM folders WHERE parent_id = ?)`,
+      [id, id],
+    );
+    photos = rows.flatMap((r) => (r.solution_image ? [r.question_image, r.solution_image] : [r.question_image]));
+    await db.runAsync(
+      'DELETE FROM questions WHERE folder_id = ? OR folder_id IN (SELECT id FROM folders WHERE parent_id = ?)',
+      [id, id],
+    );
+    await db.runAsync('DELETE FROM folders WHERE parent_id = ?', [id]);
+    await db.runAsync('DELETE FROM folders WHERE id = ?', [id]);
+  });
+  return photos;
+}
+
+/** "Matematik › Türev" biçiminde klasör yolu; klasör yoksa null. */
+export async function getFolderPath(db: Database, id: number): Promise<string | null> {
+  const row = await db.getFirstAsync<{ name: string; parent_name: string | null }>(
+    `SELECT f.name, p.name AS parent_name FROM folders f LEFT JOIN folders p ON p.id = f.parent_id WHERE f.id = ?`,
+    [id],
+  );
+  if (!row) return null;
+  return row.parent_name ? `${row.parent_name} › ${row.name}` : row.name;
 }

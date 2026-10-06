@@ -20,6 +20,11 @@ export type ThemeColors = {
   /** "Çözemedim" / aktif sorular */
   danger: string;
   dangerSoft: string;
+  /** Fotoğraf düzenleme/görüntüleme zemini ve üzerindeki yazı/çizgiler */
+  media: string;
+  onMedia: string;
+  /** Kırpma çerçevesi dışını karartan katman */
+  scrim: string;
 };
 
 // Sıcak, mat pastel palet: krem zemin, hardal sarısı vurgu, adaçayı yeşili ve kiremit kırmızısı.
@@ -38,6 +43,9 @@ export const colors: Record<ColorScheme, ThemeColors> = {
     successSoft: '#E1ECDD',
     danger: '#96432F',
     dangerSoft: '#F5E1DB',
+    media: '#000000',
+    onMedia: '#FFFFFF',
+    scrim: 'rgba(0, 0, 0, 0.55)',
   },
   dark: {
     background: '#1C1A17',
@@ -53,6 +61,9 @@ export const colors: Record<ColorScheme, ThemeColors> = {
     successSoft: '#25312A',
     danger: '#E08D7F',
     dangerSoft: '#3A2622',
+    media: '#000000',
+    onMedia: '#FFFFFF',
+    scrim: 'rgba(0, 0, 0, 0.55)',
   },
 };
 

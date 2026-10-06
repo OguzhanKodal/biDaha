@@ -50,6 +50,9 @@ Ders silinince konuları da silinir. İçinde (konular dahil) soru varsa önce s
 Kullanıcı kendi etiketlerini de ekleyebilir (hazır etiketler `is_default = 1`). Ad boş olamaz, en fazla 40 karakter, mevcut bir etiketle aynı olamaz (büyük/küçük harf farkı gözetilmez).
 
 **Fotoğraf işleme:** Uzun kenar en fazla ~1600 px, JPEG ~%70 kalite. Dosyalar uygulamanın kendi klasöründe tutulur, galeriye kaydedilmez.
+Kırpma kendi ekranımızda serbest dikdörtgendir (iOS'un kendi kırpması sadece kare). Köşeler sürüklenir, çerçeve kaydırılır, 90° döndürülür.
+Yeni soru formu açılınca doğrudan "Fotoğraf çek / Galeriden seç" sorulur. Doğru şıkka tekrar dokunmak seçimi kaldırır. Kaynak alanında son kullanılan kaynaklar önerilir.
+Soru düzenlenince tekrar durumu (başarı, sonraki tarih) değişmez.
 
 ## 5. Aralıklı tekrar
 Kullanıcının seçtiği tekrar sayısı = **N** (varsayılan 5). Aralıklar (gün): **1, 3, 7, 14, 30, 60, ...**
@@ -81,6 +84,8 @@ Soru kartında: küçük fotoğraf, ilerleme rozeti **"2/5"**, sonraki tekrar g�
 - Aktif sorular kırmızı tonlu rozetle gösterilir; son tekrarında çözülemeyen soruda ek olarak "Çözemedin" işareti olur.
 - Tamamlanan sorular yeşil.
 Sıralama: sonraki tekrar tarihi (varsayılan), eklenme tarihi, en çok başarısız.
+Ders ekranında sadece derse doğrudan eklenen sorular listelenir; konulardaki sorular konu ekranında görünür (ders kartının sayılarına dahildir).
+Günü geçmiş sorunun tekrar günü de "Bugün" yazılır.
 
 ## 8. Ana ekran (Bugün sekmesi)
 - "Merhaba {isim}"

@@ -20,6 +20,7 @@ export default function TodayScreen() {
         message="Çözemediğin soruları ekledikçe tekrar zamanı gelenler burada görünecek."
         action={<Button title="Klasörlere git" variant="secondary" onPress={() => router.navigate('/folders')} />}
       />
+      <Button title="Soru ekle" onPress={() => router.push('/question/new')} />
     </ScreenScrollView>
   );
 }

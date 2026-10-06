@@ -7,6 +7,7 @@ import { ScreenScrollView } from '@/components/ScreenScrollView';
 import { devResetAllData } from '@/db/settings';
 import { useDatabase } from '@/db/useDatabase';
 import { useSettings } from '@/features/settings/SettingsProvider';
+import { deleteAllPhotoFiles } from '@/lib/photos';
 import { useTheme } from '@/theme';
 
 export default function SettingsScreen() {
@@ -15,13 +16,14 @@ export default function SettingsScreen() {
   const { reloadSettings } = useSettings();
 
   const confirmDevReset = () => {
-    Alert.alert('Tüm veriler silinsin mi?', 'Geliştirme aracı: klasörler ve ayarlar silinir, onboarding baştan başlar.', [
+    Alert.alert('Tüm veriler silinsin mi?', 'Geliştirme aracı: sorular, fotoğraflar, klasörler ve ayarlar silinir; onboarding baştan başlar.', [
       { text: 'Vazgeç', style: 'cancel' },
       {
         text: 'Sıfırla',
         style: 'destructive',
         onPress: async () => {
           await devResetAllData(db);
+          deleteAllPhotoFiles();
           await reloadSettings();
         },
       },

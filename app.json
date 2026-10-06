@@ -34,7 +34,15 @@
           "imageWidth": 76
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "biDaha, çözemediğin soruların fotoğraflarını galeriden seçebilmek için fotoğraflarına erişir. Fotoğraflar telefonundan çıkmaz.",
+          "cameraPermission": "biDaha, çözemediğin soruların fotoğrafını çekebilmek için kameraya erişir. Fotoğraflar telefonundan çıkmaz.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

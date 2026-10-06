@@ -1,4 +1,5 @@
 import type { ExamType } from '@/domain/examPresets';
+import type { AnswerChoice } from '@/domain/questions';
 import type { LocalDate } from '@/lib/date';
 import type { FolderColor } from '@/theme/colors';
 
@@ -6,7 +7,7 @@ import type { FolderColor } from '@/theme/colors';
 export type Timestamp = string;
 export type SqlBoolean = 0 | 1;
 export type ReviewResult = 'success' | 'fail';
-export type AnswerChoice = 'A' | 'B' | 'C' | 'D' | 'E';
+export type { AnswerChoice };
 
 export type SettingsRow = {
   id: 1;

@@ -4,8 +4,9 @@ import {
   deleteFolder,
   getFolder,
   getFolderDeleteInfo,
+  getFolderPath,
   listFolders,
-  listMoveTargets,
+  listFolderTree,
   listSiblingNames,
   moveQuestionsAndDeleteFolder,
   reorderFolders,
@@ -157,7 +158,7 @@ describe('moveQuestionsAndDeleteFolder', () => {
   });
 });
 
-describe('listMoveTargets', () => {
+describe('listFolderTree', () => {
   it('klasörü ve konularını hariç tutar, ders › konu sırasıyla verir', async () => {
     const math = await subject('Matematik');
     await createFolder(db, { name: 'Türev', color: 'red', parentId: math }, now);
@@ -166,10 +167,28 @@ describe('listMoveTargets', () => {
     await createFolder(db, { name: 'Limit', color: 'red', parentId: math }, now);
     const chemistry = await subject('Kimya');
 
-    const names = (await listMoveTargets(db, chemistry)).map((f) => f.name);
+    const names = (await listFolderTree(db, chemistry)).map((f) => f.name);
     expect(names).toEqual(['Matematik', 'Türev', 'Limit', 'Fizik', 'Optik']);
 
-    const withoutMath = (await listMoveTargets(db, math)).map((f) => f.name);
+    const withoutMath = (await listFolderTree(db, math)).map((f) => f.name);
     expect(withoutMath).toEqual(['Fizik', 'Optik', 'Kimya']);
+  });
+
+  it('hariç tutulan yoksa tüm dersleri ve konuları verir', async () => {
+    const math = await subject('Matematik');
+    await createFolder(db, { name: 'Türev', color: 'red', parentId: math }, now);
+    await subject('Fizik');
+
+    expect((await listFolderTree(db)).map((f) => f.name)).toEqual(['Matematik', 'Türev', 'Fizik']);
+  });
+});
+
+describe('getFolderPath', () => {
+  it('ders › konu yolunu verir', async () => {
+    const math = await subject('Matematik');
+    const derivative = await createFolder(db, { name: 'Türev', color: 'red', parentId: math }, now);
+    expect(await getFolderPath(db, math)).toBe('Matematik');
+    expect(await getFolderPath(db, derivative)).toBe('Matematik › Türev');
+    expect(await getFolderPath(db, 999)).toBeNull();
   });
 });
