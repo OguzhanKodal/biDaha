@@ -118,6 +118,13 @@ Uygulama: Yerel bildirimin metni zamanlandığında sabitlenir. Bu yüzden önü
 - Yedek dosyası bir sürüm numarası içerir (ileride format değişirse uyumluluk için).
 - Ayarlar'da "Son yedek: 12 gün önce" bilgisi; 30 günü geçince nazik hatırlatma.
 
+**Biçim:** Tek dosya `biDaha-yedek-YYYY-MM-DD.bidaha`; içi standart TAR arşivi (sıkıştırmasız; fotoğraflar zaten JPEG):
+`manifest.json` (format `bidaha-backup`, `backupVersion` = 1, `schemaVersion`, tarih, uygulama sürümü, sayılar, eksik fotoğraf listesi), `data.json` (tüm tablolar), `photos/*.jpg`.
+Fotoğraflar arşive tek tek akıtılır; yüzlerce fotoğraf aynı anda belleğe alınmaz.
+**Geri yükleme:** dosya seçilir → yedeğin tarihi ve sayıları gösterilir → iki onay. Arşiv önce geçici klasöre açılıp doğrulanır (biçim, sürüm, her fotoğrafın varlığı); sorun varsa mevcut veriye dokunulmaz. Yeni fotoğraflar eklenir, veritabanı tek transaction'da değiştirilir, ancak ondan sonra hiçbir kayda bağlı olmayan eski fotoğraflar silinir. Daha yeni sürümle alınmış yedek reddedilir ("önce uygulamayı güncelle"). Geri yüklenen verinin "son yedek" tarihi yedeğin tarihi olur.
+"Son yedek", paylaşım menüsü kapanınca güncellenir (iOS kaydın yapılıp yapılmadığını bildirmez).
+Hatırlatma: en az bir soru varken hiç yedek yoksa ya da son yedek 30 günü geçtiyse Bugün ekranında "Yedek al" kartı.
+
 ## 12. Ayarlar
 İsim, sınav, tekrar sayısı (N), sınav tarihi, bildirim (aç/kapa + saat), yedekle/geri yükle, klasör yönetimi, tüm verileri sil (çift onaylı), hakkında.
 - N düşürülürse başarısı yeni N'e ulaşan sorular tamamlanır; etkilenen soru varsa önce sayısıyla onay istenir.

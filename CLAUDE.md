@@ -76,3 +76,4 @@ docs/                   # SPEC.md, ROADMAP.md, kararlar
 8. Bir faz bitince `docs/ROADMAP.md` içindeki maddeleri işaretle; SPEC'ten sapan bir karar alındıysa SPEC'i güncelle.
 9. Erişilebilirlik: dokunma alanları en az 44pt, renk tek başına anlam taşımasın (rozet + ikon/metin).
 10. Karanlık mod baştan desteklenir; renkler `src/theme/` dışında sabit yazılmaz.
+11. iOS sunum çakışması: bir ekran/Modal açılır ya da kapanırken uyarı (Alert), paylaşım menüsü veya seçici AÇMA — iOS sessizce açmayabilir ve beklenen promise hiç dönmez. Yükleme göstergesi için native `Modal` değil ekran içi katman kullan; otomatik açılan uyarıları geçiş bittikten sonra (`transitionEnd`) göster.

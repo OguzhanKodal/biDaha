@@ -37,10 +37,10 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Günlük yerel bildirim, saat seçimi, izin akışı (SPEC §10)
 
 ## Faz 5 — Yedekleme
-- [ ] Yedek dosyası formatı (sürüm numaralı) — karar gerekirse önce sor (native zip paketi Expo Go'da çalışmayabilir)
-- [ ] Dışa aktar + paylaş, içe aktar + üzerine yazma uyarısı (SPEC §11)
-- [ ] "Son yedek" bilgisi ve hatırlatma
-- [ ] Gerçek bir yedeği silip geri yükleyerek uçtan uca test
+- [x] Yedek dosyası formatı (sürüm numaralı): `.bidaha` = TAR (kendi okuyucu/yazıcımız, Expo Go uyumlu)
+- [x] Dışa aktar + paylaş, içe aktar + üzerine yazma uyarısı (SPEC §11)
+- [x] "Son yedek" bilgisi ve hatırlatma
+- [x] Gerçek bir yedeği silip geri yükleyerek uçtan uca test
 
 ## Faz 6 — İstatistik
 - [ ] Ders bazında sayılar, tamamlanma oranı
