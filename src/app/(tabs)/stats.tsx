@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { EmptyState } from '@/components/EmptyState';
 import { ScreenScrollView } from '@/components/ScreenScrollView';
+import { ErrorState, LoadingState } from '@/components/StatusViews';
 import { listFolders } from '@/db/folders';
 import { listReviewDays } from '@/db/reviews';
 import { getTagStats, listDailyReviews } from '@/db/stats';
@@ -27,7 +28,7 @@ export default function StatsScreen() {
   const [scopeId, setScopeId] = useState<number | null>(null);
   const todayValue = today();
 
-  const { data, reload } = useFocusedData(async () => {
+  const { data, error, reload } = useFocusedData(async () => {
     const [subjects, reviewDays, daily, tagStats] = await Promise.all([
       listFolders(db, null, todayValue),
       listReviewDays(db),
@@ -55,7 +56,11 @@ export default function StatsScreen() {
         İstatistik
       </AppText>
 
-      {isEmpty ? (
+      {error ? (
+        <ErrorState error={error} onRetry={reload} />
+      ) : !data ? (
+        <LoadingState />
+      ) : isEmpty ? (
         <EmptyState
           icon="chart.bar"
           title="Henüz istatistik yok"

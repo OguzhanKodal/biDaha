@@ -5,6 +5,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { ScreenScrollView } from '@/components/ScreenScrollView';
+import { ErrorState } from '@/components/StatusViews';
 import { countQuestions } from '@/db/backup';
 import { countDue, listReviewDays } from '@/db/reviews';
 import { useDatabase } from '@/db/useDatabase';
@@ -22,7 +23,7 @@ export default function TodayScreen() {
   const { settings } = useSettings();
   const todayValue = today();
 
-  const { data } = useFocusedData(async () => {
+  const { data, error, reload } = useFocusedData(async () => {
     const [due, days, questionCount] = await Promise.all([
       countDue(db, todayValue),
       listReviewDays(db),
@@ -37,6 +38,14 @@ export default function TodayScreen() {
   const hasDue = due > 0;
   const remindBackup = data ? shouldRemindBackup(settings.last_backup_at, data.questionCount, todayValue) : false;
   const backupDays = daysSinceBackup(settings.last_backup_at, todayValue);
+
+  if (error) {
+    return (
+      <ScreenScrollView>
+        <ErrorState error={error} onRetry={reload} />
+      </ScreenScrollView>
+    );
+  }
 
   return (
     <ScreenScrollView>

@@ -4,10 +4,12 @@ import { useCallback, useState } from 'react';
 /**
  * Ekran her odaklandığında (ilk açılış, geri dönüş, sekme değişimi) veriyi yeniden yükler.
  * `load` her render'da yeni olabilir; yükleme sadece odakta ve reload() ile tetiklenir.
+ * `loaded`: en az bir yükleme bitti mi — "yükleniyor" ile "bulunamadı (null)" ayrımı için.
  */
 export function useFocusedData<T>(load: () => Promise<T>) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const [version, setVersion] = useState(0);
 
   useFocusEffect(
@@ -18,10 +20,14 @@ export function useFocusedData<T>(load: () => Promise<T>) {
           if (active) {
             setData(result);
             setError(null);
+            setLoaded(true);
           }
         })
         .catch((e: unknown) => {
-          if (active) setError(e instanceof Error ? e : new Error(String(e)));
+          if (active) {
+            setError(e instanceof Error ? e : new Error(String(e)));
+            setLoaded(true);
+          }
         });
       return () => {
         active = false;
@@ -31,5 +37,5 @@ export function useFocusedData<T>(load: () => Promise<T>) {
   );
 
   const reload = useCallback(() => setVersion((v) => v + 1), []);
-  return { data, error, reload };
+  return { data, error, loaded, reload };
 }

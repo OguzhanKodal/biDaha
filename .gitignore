@@ -41,3 +41,6 @@ example
 # generated native folders
 /ios
 /android
+
+# biDaha yedek dosyaları (kişisel veri içerir)
+*.bidaha

@@ -48,9 +48,9 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Seri ve son 30 gün grafiği (SPEC §9)
 
 ## Faz 7 — Cila ve yayına hazırlık
-- [ ] Boş durumlar ("Henüz soru eklemedin"), yükleniyor durumları, hata mesajları
+- [x] Boş durumlar ("Henüz soru eklemedin"), yükleniyor durumları, hata mesajları
 - [ ] Karanlık mod ve küçük ekran (iPhone SE) kontrolü
-- [ ] Uygulama ikonu ve açılış ekranı (isim: biDaha)
+- [x] Uygulama ikonu ve açılış ekranı (isim: biDaha) — `scripts/generate-icons.swift` ile üretilir (açık/koyu iOS ikonu, açılış, Android)
 - [ ] Gerçek iPhone'da test (development build) — kamera ile soru ekleme dahil (simülatörde kamera yok)
 - [ ] App Store için: gizlilik açıklaması ("veri toplanmaz"), ekran görüntüleri, EAS Build + Submit
 

@@ -7,6 +7,7 @@ import { AppText } from '@/components/AppText';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
+import { ErrorState, LoadingState } from '@/components/StatusViews';
 import { HeaderButton } from '@/components/HeaderButton';
 import { deleteQuestion, getQuestion, reactivateQuestion, setSolutionImage } from '@/db/questions';
 import { useDatabase } from '@/db/useDatabase';
@@ -26,14 +27,18 @@ export default function QuestionDetailScreen() {
   const { colors, spacing, radius } = useTheme();
   const { settings } = useSettings();
   const [busy, setBusy] = useState(false);
-  const { data: question, error, reload } = useFocusedData(() => getQuestion(db, questionId));
+  const { data: question, error, loaded, reload } = useFocusedData(() => getQuestion(db, questionId));
 
-  if (error) return <EmptyState icon="exclamationmark.triangle" title="Soru açılamadı" message={error.message} />;
+  if (error) return <ErrorState error={error} onRetry={reload} />;
+  if (!loaded) return <LoadingState />;
   if (question === null) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background }}>
-        <ActivityIndicator color={colors.accent} />
-      </View>
+      <EmptyState
+        icon="questionmark.folder"
+        title="Soru bulunamadı"
+        message="Bu soru silinmiş olabilir."
+        action={<Button title="Geri dön" variant="secondary" onPress={() => router.back()} />}
+      />
     );
   }
 

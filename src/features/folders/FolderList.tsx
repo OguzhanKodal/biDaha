@@ -5,6 +5,7 @@ import { Alert, FlatList, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
+import { LoadingState } from '@/components/StatusViews';
 import { listFolders, reorderFolders, type FolderWithStats } from '@/db/folders';
 import { useDatabase } from '@/db/useDatabase';
 import { moveItem } from '@/domain/folders';
@@ -55,7 +56,9 @@ export function FolderList({ parentId, editing, header, footer }: Props) {
     reload();
   };
 
-  const empty = folders ? (
+  const empty = !folders ? (
+    error ? null : <LoadingState />
+  ) : (
     <EmptyState
       icon="folder.badge.plus"
       title={isTopicList ? 'Henüz konu yok' : 'Henüz ders yok'}
@@ -68,7 +71,7 @@ export function FolderList({ parentId, editing, header, footer }: Props) {
         <Button title={isTopicList ? 'Konu ekle' : 'Ders ekle'} onPress={() => openFolderForm({ parentId })} />
       }
     />
-  ) : null;
+  );
 
   return (
     <FlatList<FolderWithStats>
