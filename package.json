@@ -61,5 +61,6 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }
-  }
+  },
+  "license": "UNLICENSED"
 }
