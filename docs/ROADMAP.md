@@ -49,10 +49,14 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 
 ## Faz 7 — Cila ve yayına hazırlık
 - [x] Boş durumlar ("Henüz soru eklemedin"), yükleniyor durumları, hata mesajları
-- [ ] Karanlık mod ve küçük ekran (iPhone SE) kontrolü
+- [x] Karanlık mod ve küçük ekran (iPhone SE) kontrolü — en büyük yazı boyutu (Dynamic Type) dahil
 - [x] Uygulama ikonu ve açılış ekranı (isim: biDaha) — `scripts/generate-icons.swift` ile üretilir (açık/koyu iOS ikonu, açılış, Android)
 - [ ] Gerçek iPhone'da test (development build) — kamera ile soru ekleme dahil (simülatörde kamera yok)
-- [ ] App Store için: gizlilik açıklaması ("veri toplanmaz"), ekran görüntüleri, EAS Build + Submit
+- [x] App Store metinleri ve gizlilik politikası (`docs/app-store.md`, `docs/privacy-policy.md`), `eas.json`, şifreleme beyanı
+- [ ] Gizlilik politikasını GitHub Pages ile yayınla, adresi App Store Connect'e gir
+- [ ] Apple Developer hesabı onaylanınca: `expo-dev-client` + development build ile gerçek iPhone testi
+- [ ] Mağaza ekran görüntüleri (6.9", gerçekçi verilerle)
+- [ ] EAS Build (production) + Submit
 
 ## Sonraki fikirler (kapsam dışı)
 Karışık tekrar, arama/filtre, PDF dışa aktarma, iCloud yedeği, OCR, yapay zekâ çözüm, Android.

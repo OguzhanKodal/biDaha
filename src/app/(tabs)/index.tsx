@@ -14,7 +14,7 @@ import { examCountdownLabel, streakDays, streakLabel } from '@/domain/spacedRepe
 import { useSettings } from '@/features/settings/SettingsProvider';
 import { today } from '@/lib/date';
 import { useFocusedData } from '@/lib/useFocusedData';
-import { useTheme } from '@/theme';
+import { displayMaxFontScale, useTheme } from '@/theme';
 
 /** Ana ekran (SPEC §8): selamlama, geri sayım, bugünkü tekrar, seri, hızlı soru ekleme. */
 export default function TodayScreen() {
@@ -73,7 +73,10 @@ export default function TodayScreen() {
         <AppText variant="callout" color={hasDue ? 'onPrimary' : 'textSecondary'}>
           Bugün tekrar edilecek
         </AppText>
-        <AppText style={{ fontSize: 44, lineHeight: 50, fontWeight: '700' }} color={hasDue ? 'onPrimary' : 'text'}>
+        <AppText
+          style={{ fontSize: 44, fontWeight: '700' }}
+          maxFontSizeMultiplier={displayMaxFontScale}
+          color={hasDue ? 'onPrimary' : 'text'}>
           {data ? `${due} soru` : '…'}
         </AppText>
         {hasDue ? (

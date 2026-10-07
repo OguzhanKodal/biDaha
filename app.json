@@ -16,7 +16,11 @@
         "light": "./assets/images/icon.png",
         "dark": "./assets/images/icon-dark.png"
       },
-      "bundleIdentifier": "com.kodal.bidaha"
+      "bundleIdentifier": "com.kodal.bidaha",
+      "supportsTablet": false,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {

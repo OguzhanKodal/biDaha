@@ -32,7 +32,8 @@ export function HeaderButton({ onPress, label, icon, bold = false }: Props) {
       {icon ? (
         <Icon name={icon} size={22} color="accent" />
       ) : (
-        <AppText variant={bold ? 'bodyStrong' : 'body'} color="accent">
+        // Başlık çubuğu sabit yükseklikte: iOS'un kendi başlık butonları gibi sınırlı büyür.
+        <AppText variant={bold ? 'bodyStrong' : 'body'} color="accent" maxFontSizeMultiplier={1.3}>
           {label}
         </AppText>
       )}

@@ -6,7 +6,7 @@ import { Icon } from '@/components/Icon';
 import { clampRepetitions, defaultRepetitions, maxRepetitions, minRepetitions } from '@/domain/onboarding';
 import { OnboardingStep } from '@/features/onboarding/OnboardingStep';
 import { useOnboardingDraft } from '@/features/onboarding/OnboardingDraftProvider';
-import { minTouchSize, useTheme } from '@/theme';
+import { displayMaxFontScale, minTouchSize, useTheme } from '@/theme';
 
 export default function RepetitionsStep() {
   const { colors, spacing, radius } = useTheme();
@@ -53,7 +53,9 @@ export default function RepetitionsStep() {
         accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
         onAccessibilityAction={(e) => set(value + (e.nativeEvent.actionName === 'increment' ? 1 : -1))}>
         {stepButton(-1)}
-        <AppText style={{ fontSize: 64, lineHeight: 72, fontWeight: '700', minWidth: 80, textAlign: 'center' }}>
+        <AppText
+          style={{ fontSize: 64, fontWeight: '700', minWidth: 80, textAlign: 'center' }}
+          maxFontSizeMultiplier={displayMaxFontScale}>
           {value}
         </AppText>
         {stepButton(1)}

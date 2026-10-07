@@ -45,26 +45,31 @@ export function SettingsRow({ icon, label, value, onPress, destructive, disabled
       style={{
         minHeight: minTouchSize + 8,
         flexDirection: 'row',
+        // Büyük yazıda değer etiketin altına iner; etiket harf harf kırılmaz.
+        flexWrap: 'wrap',
         alignItems: 'center',
-        gap: spacing.md,
+        columnGap: spacing.md,
+        rowGap: spacing.xxs,
+        paddingVertical: spacing.xs,
         paddingHorizontal: spacing.lg,
         borderBottomWidth: last ? 0 : 1,
         borderBottomColor: colors.background,
         opacity: disabled ? 0.45 : 1,
       }}>
       <Icon name={icon} size={18} color={destructive ? 'danger' : 'accent'} />
-      <AppText style={{ flex: 1 }} color={destructive ? 'danger' : 'text'}>
+      <AppText style={{ flexGrow: 1, flexShrink: 1, minWidth: 120 }} color={destructive ? 'danger' : 'text'}>
         {label}
       </AppText>
       {accessory ?? (
-        <>
+        // Değer ve ok birlikte taşınır (büyük yazıda birlikte alt satıra iner).
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md, flexShrink: 1, marginLeft: 'auto' }}>
           {value ? (
-            <AppText color="textSecondary" numberOfLines={1} style={{ maxWidth: '55%' }}>
+            <AppText color="textSecondary" numberOfLines={1} style={{ flexShrink: 1 }}>
               {value}
             </AppText>
           ) : null}
           {onPress && !destructive ? <Icon name="chevron.right" size={13} color="textSecondary" /> : null}
-        </>
+        </View>
       )}
     </View>
   );
