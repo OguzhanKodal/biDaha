@@ -15,6 +15,8 @@ App Store Connect'e girilecek metinler ve cevaplar. Karakter sınırları kontro
 | Fiyat | Ücretsiz |
 | Telif | 2026 Oguzhan Kodal |
 | Cihaz | Sadece iPhone |
+| Gizlilik politikası URL | https://oguzhankodal.github.io/biDaha/privacy-policy |
+| Destek URL | https://github.com/OguzhanKodal/biDaha/issues |
 
 ## Tanıtım metni (170)
 
@@ -70,7 +72,7 @@ Hesap yok, reklam yok, internet gerekmez. Soruların, fotoğrafların ve ilerlem
 
 - **Veri toplama:** "Hayır, bu uygulamadan veri toplamıyoruz" → etiket: **Data Not Collected / Veri Toplanmaz**.
 - Gerekçe: Hesap, analitik, reklam, çökme raporlama, sunucu yok. Tüm veriler cihazda (SQLite + uygulama klasöründeki fotoğraflar). Bildirimler yerel. Yedek dosyası yalnızca kullanıcı paylaştığında ve kullanıcının seçtiği yere gider.
-- **Gizlilik politikası URL'si:** `docs/privacy-policy.md` GitHub Pages ile yayınlanınca o adres girilir.
+- **Gizlilik politikası URL'si:** https://oguzhankodal.github.io/biDaha/privacy-policy (GitHub Pages, `docs/` klasöründen).
 - **Şifreleme:** Standart dışı şifreleme yok — `app.json` içinde `ios.config.usesNonExemptEncryption: false`.
 
 ## İzin metinleri (Info.plist)
