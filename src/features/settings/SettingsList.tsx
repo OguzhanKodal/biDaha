@@ -48,6 +48,8 @@ export function SettingsRow({ icon, label, value, onPress, destructive, disabled
         // Büyük yazıda değer etiketin altına iner; etiket harf harf kırılmaz.
         flexWrap: 'wrap',
         alignItems: 'center',
+        // Sarma modunda içerik varsayılan olarak üste yaslanır; satırın dikey ortasında dursun.
+        alignContent: 'center',
         columnGap: spacing.md,
         rowGap: spacing.xxs,
         paddingVertical: spacing.xs,
