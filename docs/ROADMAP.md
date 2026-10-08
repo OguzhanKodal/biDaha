@@ -56,7 +56,8 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] Gizlilik politikasını GitHub Pages ile yayınla: https://oguzhankodal.github.io/biDaha/privacy-policy
 - [x] Apple Developer hesabı onaylanınca: `expo-dev-client` + development build ile gerçek iPhone testi
 - [x] Mağaza ekran görüntüleri (6.9", gerçekçi verilerle) — `scripts/store/`
-- [ ] EAS Build (production) + Submit
+- [x] EAS Build (production) + Submit — 1.0.0 (2) App Store Connect'e yüklendi (ASC App ID 6820660223)
+- [ ] App Store Connect formu + incelemeye gönderim
 
 ## Sonraki fikirler (kapsam dışı)
 Karışık tekrar, arama/filtre, PDF dışa aktarma, iCloud yedeği, OCR, yapay zekâ çözüm, Android.
