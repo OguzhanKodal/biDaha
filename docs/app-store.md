@@ -98,3 +98,12 @@ App Store 6.9" iPhone ekran görüntüsü ister (1320 × 2868; iPhone 17 Pro Max
 7. Koyu mod görünümü
 
 Gerçekçi örnek verilerle (gerçek soru fotoğrafları) çekilmeli.
+
+**Üretim (tekrar gerekirse):**
+1. `swift scripts/store/sample-questions.swift <klasör>` — özgün örnek soru fotoğrafları (telifli içerik yok).
+2. `eas build -p ios --profile preview-simulator` → çıkan `.app`'i iPhone 17 Pro Max simülatörüne kur, bir kez aç.
+3. Fotoğrafları uygulamanın `Documents/photos/demo-*.jpg` olarak kopyala; `python3 scripts/store/seed-demo.py YYYY-MM-DD | sqlite3 <Documents/SQLite/bidaha.db>`.
+4. Durum çubuğu: `xcrun simctl status_bar <udid> override --time 9:41 ...`; ekranları `bidaha:///…` bağlantılarıyla aç, `xcrun simctl io <udid> screenshot` ile çek.
+5. `swiftc -O -o compose scripts/store/compose-screenshots.swift && ./compose <ham> store/screenshots` — 1320×2868, saydamlıksız, başlıklı.
+
+Çıktılar `store/screenshots/` (git'e girmez).

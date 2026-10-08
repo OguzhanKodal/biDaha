@@ -44,3 +44,6 @@ example
 
 # biDaha yedek dosyaları (kişisel veri içerir)
 *.bidaha
+
+# Mağaza görselleri (scripts/store ile yeniden üretilir)
+/store/
