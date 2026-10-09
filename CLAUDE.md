@@ -4,7 +4,7 @@
 Uygulamanın adı **biDaha** (yazımı her yerde tam olarak böyle: küçük "b", büyük "D").
 Teknik kimlik: slug `bidaha`, iOS bundle ID `com.kodal.bidaha` (`app.json` içinde). Web desteklenmez (`platforms: ios, android`).
 
-YKS, DGS, KPSS gibi sınavlara hazırlananlar için **yanlış soru defteri** uygulaması (sadece iPhone, ileride Android olabilir).
+YKS, DGS, KPSS gibi sınavlara hazırlananlar için **yanlış soru defteri** uygulaması (iPhone + Android).
 Kullanıcı çözemediği sorunun fotoğrafını çeker, isteğe bağlı olarak çözüm fotoğrafı, doğru şık, hata nedeni etiketi ve not ekler.
 Sorular ders › konu klasörlerinde durur ve **aralıklı tekrar** sistemiyle tekrar edilir.
 **Tüm veriler sadece telefonda tutulur. Sunucu, hesap ve bulut yok.**
@@ -76,4 +76,5 @@ docs/                   # SPEC.md, ROADMAP.md, kararlar
 8. Bir faz bitince `docs/ROADMAP.md` içindeki maddeleri işaretle; SPEC'ten sapan bir karar alındıysa SPEC'i güncelle.
 9. Erişilebilirlik: dokunma alanları en az 44pt, renk tek başına anlam taşımasın (rozet + ikon/metin).
 10. Karanlık mod baştan desteklenir; renkler `src/theme/` dışında sabit yazılmaz. Yazılara sabit `lineHeight` verilmez (büyük yazı ayarında harfleri keser); metin `AppText` ile yazılır.
+12. **İki platform:** İkon eklerken `src/components/Icon.tsx` → `androidSymbols` haritasına Material karşılığını da ekle. Platforma özel bileşen `X.android.tsx` dosyasıyla yazılır (ör. tarih/saat seçici). Android uyarı penceresi en fazla 3 buton gösterir; daha fazla seçenek için ekran ya da çip kullan. Klavyeden kaçma için `KeyboardSafeView`. Android Expo Go'da `expo-notifications` yüklenemez (`src/lib/reminders.ts` bunu atlar), bildirimler development/production derlemesinde denenir.
 11. iOS sunum çakışması: bir ekran/Modal açılır ya da kapanırken uyarı (Alert), paylaşım menüsü veya seçici AÇMA — iOS sessizce açmayabilir ve beklenen promise hiç dönmez. Yükleme göstergesi için native `Modal` değil ekran içi katman kullan; otomatik açılan uyarıları geçiş bittikten sonra (`transitionEnd`) göster.

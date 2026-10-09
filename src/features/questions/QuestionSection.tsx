@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Pressable, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -19,7 +19,7 @@ import {
 import { useSettings } from '@/features/settings/SettingsProvider';
 import { today } from '@/lib/date';
 import { useFocusedData } from '@/lib/useFocusedData';
-import { minTouchSize, useTheme } from '@/theme';
+import { useTheme } from '@/theme';
 
 import { QuestionCard } from './QuestionCard';
 
@@ -47,44 +47,18 @@ export function QuestionSection({ folderId }: { folderId: number }) {
     reload();
   };
 
-  const chooseSort = () => {
-    Alert.alert('Sırala', undefined, [
-      ...questionSorts.map((option) => ({
-        text: option === sort ? `✓ ${questionSortLabels[option]}` : questionSortLabels[option],
-        onPress: () => {
-          setSort(option);
-          reload();
-        },
-      })),
-      { text: 'Vazgeç', style: 'cancel' as const },
-    ]);
+  const changeSort = (next: QuestionSort) => {
+    setSort(next);
+    reload();
   };
 
   const addQuestion = () => router.push({ pathname: '/question/new', params: { folderId: String(folderId) } });
 
   return (
     <View style={{ gap: spacing.md, marginTop: spacing.lg }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <AppText variant="heading" accessibilityRole="header">
-          Sorular
-        </AppText>
-        <Pressable
-          onPress={chooseSort}
-          accessibilityRole="button"
-          accessibilityLabel={`Sıralama: ${questionSortLabels[sort]}. Değiştirmek için dokun`}
-          style={({ pressed }) => ({
-            minHeight: minTouchSize,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: spacing.xs,
-            opacity: pressed ? 0.6 : 1,
-          })}>
-          <Icon name="arrow.up.arrow.down" size={14} color="accent" />
-          <AppText variant="callout" color="accent">
-            {questionSortLabels[sort]}
-          </AppText>
-        </Pressable>
-      </View>
+      <AppText variant="heading" accessibilityRole="header">
+        Sorular
+      </AppText>
 
       <View style={{ flexDirection: 'row', gap: spacing.sm }} accessibilityRole="tablist">
         <Chip
@@ -115,6 +89,23 @@ export function QuestionSection({ folderId }: { folderId: number }) {
           onPress={() => router.push({ pathname: '/review', params: { mode: 'free', folderId: String(folderId) } })}
         />
       ) : null}
+      {/* Android'de uyarı penceresi en fazla 3 buton gösterir; sıralama bu yüzden ekranda seçilir. */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.sm }}>
+        <Icon name="arrow.up.arrow.down" size={14} color="textSecondary" />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: spacing.sm }}>
+          {questionSorts.map((option) => (
+            <Chip
+              key={option}
+              label={questionSortLabels[option]}
+              role="radio"
+              selected={sort === option}
+              accessibilityLabel={`Sırala: ${questionSortLabels[option]}`}
+              onPress={() => changeSort(option)}
+            />
+          ))}
+        </ScrollView>
+      </View>
+
       <Button title="Soru ekle" variant={data && data.due > 0 ? 'secondary' : 'primary'} onPress={addQuestion} />
 
       {data && data.questions.length === 0 ? (

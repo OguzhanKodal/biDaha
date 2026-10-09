@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
+import { KeyboardSafeView } from '@/components/KeyboardSafeView';
 import { useTheme } from '@/theme';
 
 export const onboardingStepCount = 5;
@@ -35,7 +36,7 @@ export function OnboardingStep({
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.flex, { backgroundColor: colors.background }]}>
-      <KeyboardAvoidingView behavior="padding" style={styles.flex}>
+      <KeyboardSafeView>
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ padding: spacing.xl, gap: spacing.xl }}
@@ -70,7 +71,7 @@ export function OnboardingStep({
             <Button title={secondaryLabel} onPress={onSecondary} variant="plain" />
           ) : null}
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardSafeView>
     </SafeAreaView>
   );
 }

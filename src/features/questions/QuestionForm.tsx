@@ -1,11 +1,12 @@
 import { router, Stack, useNavigation } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Pressable, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Chip } from '@/components/Chip';
 import { HeaderButton } from '@/components/HeaderButton';
 import { Icon } from '@/components/Icon';
+import { KeyboardSafeView } from '@/components/KeyboardSafeView';
 import { TextField } from '@/components/TextField';
 import { createErrorTag, listErrorTags } from '@/db/errorTags';
 import { getFolderPath } from '@/db/folders';
@@ -193,6 +194,7 @@ export function QuestionForm({ mode }: { mode: QuestionFormMode }) {
         }
       }
       syncReminders(db);
+      leaving.current = true;
       router.back();
     } catch (e) {
       // Kayıt başarısız: bu denemede kopyalanan dosyalar hiçbir kayda bağlı değil.
@@ -202,16 +204,28 @@ export function QuestionForm({ mode }: { mode: QuestionFormMode }) {
     }
   };
 
-  const cancel = () => {
-    if (!dirty) {
-      router.back();
-      return;
-    }
-    Alert.alert('Değişiklikler kaydedilmesin mi?', undefined, [
-      { text: 'Düzenlemeye devam et', style: 'cancel' },
-      { text: 'Kaydetmeden çık', style: 'destructive', onPress: () => router.back() },
-    ]);
-  };
+  // Ekran hangi yoldan kapanırsa kapansın (Vazgeç, Android geri tuşu, kaydırma) kaydedilmemiş
+  // değişiklik varsa önce onay istenir. Kaydetme sonrası çıkışta leaving true yapılır.
+  const leaving = useRef(false);
+  useEffect(() => {
+    return navigation.addListener('beforeRemove', (e) => {
+      if (!dirty || leaving.current) return;
+      e.preventDefault();
+      Alert.alert('Değişiklikler kaydedilmesin mi?', undefined, [
+        { text: 'Düzenlemeye devam et', style: 'cancel' },
+        {
+          text: 'Kaydetmeden çık',
+          style: 'destructive',
+          onPress: () => {
+            leaving.current = true;
+            navigation.dispatch(e.data.action);
+          },
+        },
+      ]);
+    });
+  }, [navigation, dirty]);
+
+  const cancel = () => router.back();
 
   const suggestions = filterSourceSuggestions(recentSources, sourceName);
   const showError = (key: 'missingPhoto' | 'missingFolder') =>
@@ -228,7 +242,7 @@ export function QuestionForm({ mode }: { mode: QuestionFormMode }) {
         }}
       />
       {loaded ? (
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <KeyboardSafeView>
           <ScrollView
             keyboardShouldPersistTaps="handled"
             contentInsetAdjustmentBehavior="automatic"
@@ -367,7 +381,7 @@ export function QuestionForm({ mode }: { mode: QuestionFormMode }) {
               ) : null}
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </KeyboardSafeView>
       ) : (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background }}>
           <ActivityIndicator color={colors.accent} />

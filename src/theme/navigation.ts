@@ -28,6 +28,8 @@ export function useStackScreenOptions() {
   const { colors } = useTheme();
   return {
     headerBackTitle: 'Geri',
+    // Android'de başlık varsayılan olarak sola yaslı; Vazgeç/Kaydet butonlarıyla sıkışmasın diye ortada.
+    headerTitleAlign: 'center',
     headerTintColor: colors.accent,
     headerTitleStyle: { color: colors.text },
     headerLargeTitleStyle: { color: colors.text },

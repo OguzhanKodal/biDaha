@@ -6,12 +6,10 @@ import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-na
 import { AppText } from '@/components/AppText';
 
 import { markBackupDone } from '@/db/backup';
-import { createFolder, listFolderTree } from '@/db/folders';
 import { changeTargetRepetitions, countCompletedByTarget, devMakeAllDue, resetAllData, updateSettings } from '@/db/settings';
 import { useDatabase } from '@/db/useDatabase';
 import { lastBackupLabel } from '@/domain/backup';
-import { examLabels, examTypes, missingSubjects, type ExamType } from '@/domain/examPresets';
-import { autoFolderColor } from '@/domain/folders';
+import { examLabels } from '@/domain/examPresets';
 import { clampRepetitions, maxRepetitions, minRepetitions } from '@/domain/onboarding';
 import { SettingsRow, SettingsSection, SettingsStepper, SettingsSwitch } from '@/features/settings/SettingsList';
 import { useSettings } from '@/features/settings/SettingsProvider';
@@ -113,47 +111,6 @@ export default function SettingsScreen() {
       );
     });
 
-  // Sınav değişince mevcut klasörler silinmez; yeni sınavın eksik dersleri önerilir (SPEC §3).
-  const applyExam = (exam: ExamType) =>
-    run(async () => {
-      await updateSettings(db, { exam_type: exam });
-      await reloadSettings();
-      const existing = (await listFolderTree(db)).filter((f) => f.parent_id === null);
-      const missing = missingSubjects(
-        exam,
-        existing.map((f) => f.name),
-      );
-      if (missing.length === 0) return;
-      Alert.alert(
-        `${examLabels[exam]} dersleri eklensin mi?`,
-        `Eksik ${missing.length} ders: ${missing.join(', ')}. Mevcut klasörlerin silinmez.`,
-        [
-          { text: 'Hayır', style: 'cancel' },
-          {
-            text: 'Ekle',
-            onPress: () =>
-              run(async () => {
-                const now = new Date().toISOString();
-                for (const [i, name] of missing.entries()) {
-                  await createFolder(db, { name, color: autoFolderColor(existing.length + i), parentId: null }, now);
-                }
-              }),
-          },
-        ],
-      );
-    });
-
-  const chooseExam = () =>
-    Alert.alert('Hangi sınava hazırlanıyorsun?', undefined, [
-      ...examTypes.map((exam) => ({
-        text: exam === settings.exam_type ? `✓ ${examLabels[exam]}` : examLabels[exam],
-        onPress: () => {
-          if (exam !== settings.exam_type) applyExam(exam);
-        },
-      })),
-      { text: 'Vazgeç', style: 'cancel' as const },
-    ]);
-
   // N düşerse başarısı yeni N'e ulaşan sorular tamamlanır (önce onay); artarsa tamamlananlar kalır.
   const changeTarget = (value: number) =>
     run(async () => {
@@ -231,7 +188,7 @@ export default function SettingsScreen() {
             icon="graduationcap"
             label="Sınav"
             value={settings.exam_type ? examLabels[settings.exam_type] : 'Seçilmedi'}
-            onPress={chooseExam}
+            onPress={() => router.push('/settings/exam')}
           />
           <SettingsRow
             icon="calendar"

@@ -1,5 +1,6 @@
-import * as Notifications from 'expo-notifications';
-import { Alert, Linking } from 'react-native';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
+import type * as NotificationsModule from 'expo-notifications';
+import { Alert, Linking, Platform } from 'react-native';
 
 import type { Database } from '@/db/database';
 import { getSettings, listDueGroups } from '@/db/settings';
@@ -7,8 +8,34 @@ import { buildReminderPlan, dueCountsForDays, reminderPlanDays } from '@/domain/
 
 import { today } from './date';
 
+/** Android 8+ bildirimleri bir kanala bağlı olmak zorunda. */
+const ANDROID_CHANNEL_ID = 'daily-reminder';
+
+/**
+ * Android'deki Expo Go, SDK 53'ten beri expo-notifications içe aktarılınca hata verir
+ * (gerçek derlemelerde sorun yok). Paket bu yüzden ihtiyaç anında yüklenir; Android Expo Go'da
+ * bildirimler sessizce atlanır — sadece geliştirme ortamını etkiler.
+ */
+const notificationsUnavailable =
+  Platform.OS === 'android' && Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+
+function loadNotifications(): typeof NotificationsModule | null {
+  if (notificationsUnavailable) return null;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require('expo-notifications') as typeof NotificationsModule;
+}
+
 /** Uygulama açıkken gelen bildirim de banner olarak görünsün. */
 export function configureNotificationHandler(): void {
+  const Notifications = loadNotifications();
+  if (!Notifications) return;
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
+      name: 'Günlük hatırlatma',
+      description: 'Bugün tekrar edilecek sorular ve soru ekleme hatırlatması',
+      importance: Notifications.AndroidImportance.DEFAULT,
+    }).catch((e) => console.warn('Bildirim kanalı oluşturulamadı', e));
+  }
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldPlaySound: false,
@@ -21,6 +48,11 @@ export function configureNotificationHandler(): void {
 
 /** İzin ister; reddedildiyse kullanıcıyı Ayarlar'a yönlendirmeyi önerir. İzin varsa true. */
 export async function ensureNotificationPermission(): Promise<boolean> {
+  const Notifications = loadNotifications();
+  if (!Notifications) {
+    Alert.alert('Bildirimler bu ortamda yok', 'Android Expo Go bildirimleri desteklemiyor; gerçek uygulamada çalışır.');
+    return false;
+  }
   const current = await Notifications.getPermissionsAsync();
   if (current.granted) return true;
   if (current.canAskAgain) {
@@ -69,6 +101,8 @@ export function syncReminders(db: Database): Promise<void> {
 }
 
 async function runSync(db: Database): Promise<void> {
+  const Notifications = loadNotifications();
+  if (!Notifications) return;
   await Notifications.cancelAllScheduledNotificationsAsync();
   const settings = await getSettings(db);
   if (settings.onboarding_done !== 1 || settings.notifications_enabled !== 1) return;
@@ -81,7 +115,7 @@ async function runSync(db: Database): Promise<void> {
   for (const reminder of plan) {
     await Notifications.scheduleNotificationAsync({
       content: { title: reminder.title, body: reminder.body },
-      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: reminder.date },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: reminder.date, channelId: ANDROID_CHANNEL_ID },
     });
   }
 }

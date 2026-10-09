@@ -60,6 +60,14 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 - [x] App Store Connect formu + incelemeye gönderim (1.0.0 (2), 9 Ekim 2026)
 - [ ] Apple incelemesi sonucu → yayın
 
+## Faz 8 — Android ve Google Play
+- [x] Android uyarlaması: Material ikon karşılıkları, Android tarih/saat seçicisi, 3 buton sınırına uygun sınav ekranı ve sıralama çipleri, bildirim kanalı, klavye (KeyboardSafeView), geri tuşunda kaydedilmemiş form onayı, sekme çubuğu teması, `com.kodal.bidaha`
+- [x] Android öykünücüsünde (Pixel 7, Android 15) uçtan uca deneme: onboarding, soru ekleme + kırpma, tekrar
+- [ ] Play Console: uygulama kaydı, mağaza sayfası (tanıtım görseli 1024×500, ekran görüntüleri), veri güvenliği formu, içerik derecelendirmesi, hedef kitle
+- [ ] Android production derlemesi (AAB) + ilk yüklemeyi elle yapma
+- [ ] Kapalı test: en az 12 test kullanıcısı, 14 gün (kişisel hesap şartı)
+- [ ] Üretim yayınına başvuru
+
 ## Sonraki fikirler (kapsam dışı)
 Karışık tekrar, arama/filtre, PDF dışa aktarma, iCloud yedeği, OCR, yapay zekâ çözüm, Android.
 
