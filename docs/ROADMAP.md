@@ -63,7 +63,8 @@ Her faz ayrı bir Claude Code oturumunda yapılabilir. Faz bitince maddeleri `[x
 ## Faz 8 — Android ve Google Play
 - [x] Android uyarlaması: Material ikon karşılıkları, Android tarih/saat seçicisi, 3 buton sınırına uygun sınav ekranı ve sıralama çipleri, bildirim kanalı, klavye (KeyboardSafeView), geri tuşunda kaydedilmemiş form onayı, sekme çubuğu teması, `com.kodal.bidaha`
 - [x] Android öykünücüsünde (Pixel 7, Android 15) uçtan uca deneme: onboarding, soru ekleme + kırpma, tekrar
-- [ ] Play Console: uygulama kaydı, mağaza sayfası (tanıtım görseli 1024×500, ekran görüntüleri), veri güvenliği formu, içerik derecelendirmesi, hedef kitle
+- [x] Play Store görselleri: 512 ikon, 1024×500 öne çıkan grafik, 6 telefon ekran görüntüsü (`store/play/`, metinler `docs/play-store.md`)
+- [ ] Play Console: uygulama kaydı (com.kodal.bidaha oluşturuldu), mağaza sayfası, veri güvenliği formu, içerik derecelendirmesi, hedef kitle
 - [ ] Android production derlemesi (AAB) + ilk yüklemeyi elle yapma
 - [ ] Kapalı test: en az 12 test kullanıcısı, 14 gün (kişisel hesap şartı)
 - [ ] Üretim yayınına başvuru

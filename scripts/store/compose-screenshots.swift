@@ -1,5 +1,6 @@
 // App Store tanıtım görselleri: ekran görüntüsü + başlık. Çıktı 1320×2868 (6.9" iPhone).
-// Kullanım: swift scripts/store/compose-screenshots.swift <ham görüntü klasörü> <çıktı klasörü>
+// Kullanım: compose <ham görüntü klasörü> <çıktı klasörü> [genişlik yükseklik]
+// Varsayılan 1320×2868 (App Store 6.9"); Google Play için 1080 1920.
 // Ham görüntüler: 1-today.png, 2-review.png, ... (iPhone 17 Pro Max simülatörü, 1320×2868).
 import AppKit
 
@@ -23,10 +24,13 @@ func color(_ hex: UInt32) -> NSColor {
   NSColor(srgbRed: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255, blue: CGFloat(hex & 0xFF) / 255, alpha: 1)
 }
 
-let width: CGFloat = 1320, height: CGFloat = 2868
 let args = CommandLine.arguments
 let inputDir = args.count > 1 ? args[1] : "."
 let outputDir = args.count > 2 ? args[2] : "."
+let width: CGFloat = args.count > 3 ? CGFloat(Double(args[3])!) : 1320
+let height: CGFloat = args.count > 4 ? CGFloat(Double(args[4])!) : 2868
+/// Yerleşim 1320 genişliğe göre tasarlandı; diğer boyutlarda orantılı ölçeklenir.
+let k = width / 1320
 
 for (index, slide) in slides.enumerated() {
   guard let shot = NSImage(contentsOfFile: "\(inputDir)/\(slide.input).png") else {
@@ -48,34 +52,34 @@ for (index, slide) in slides.enumerated() {
   // Arka planda hafif hardal leke (marka dokunuşu)
   let accent = slide.dark ? color(0xB88A1E).withAlphaComponent(0.18) : color(0xE8C468).withAlphaComponent(0.35)
   accent.setFill()
-  NSBezierPath(ovalIn: NSRect(x: index % 2 == 0 ? 760 : -320, y: 1300, width: 900, height: 900)).fill()
+  NSBezierPath(ovalIn: NSRect(x: (index % 2 == 0 ? 760 : -320) * k, y: 1300 * k, width: 900 * k, height: 900 * k)).fill()
 
   let center = NSMutableParagraphStyle(); center.alignment = .center; center.lineSpacing = 6
   let title = NSAttributedString(string: slide.title, attributes: [
-    .font: NSFont.systemFont(ofSize: 104, weight: .heavy), .foregroundColor: titleColor, .paragraphStyle: center, .kern: -1.5,
+    .font: NSFont.systemFont(ofSize: 104 * k, weight: .heavy), .foregroundColor: titleColor, .paragraphStyle: center, .kern: -1.5 * k,
   ])
   let subtitle = NSAttributedString(string: slide.subtitle, attributes: [
-    .font: NSFont.systemFont(ofSize: 50, weight: .medium), .foregroundColor: subtitleColor, .paragraphStyle: center,
+    .font: NSFont.systemFont(ofSize: 50 * k, weight: .medium), .foregroundColor: subtitleColor, .paragraphStyle: center,
   ])
   // Başlık + açıklama bloğu, ekran görüntüsünün üstündeki alanda dikey ortalanır (tek ya da iki satır fark etmez).
-  let titleSize = title.boundingRect(with: CGSize(width: width - 160, height: 600), options: [.usesLineFragmentOrigin]).size
-  let subtitleSize = subtitle.boundingRect(with: CGSize(width: width - 220, height: 300), options: [.usesLineFragmentOrigin]).size
-  let gap: CGFloat = 36
-  let blockTop = 110 + (600 - (titleSize.height + gap + subtitleSize.height)) / 2
-  title.draw(with: NSRect(x: 80, y: blockTop, width: width - 160, height: titleSize.height + 10), options: [.usesLineFragmentOrigin])
+  let titleSize = title.boundingRect(with: CGSize(width: width - 160 * k, height: 600 * k), options: [.usesLineFragmentOrigin]).size
+  let subtitleSize = subtitle.boundingRect(with: CGSize(width: width - 220 * k, height: 300 * k), options: [.usesLineFragmentOrigin]).size
+  let gap: CGFloat = 36 * k
+  let blockTop = 110 * k + (600 * k - (titleSize.height + gap + subtitleSize.height)) / 2
+  title.draw(with: NSRect(x: 80 * k, y: blockTop, width: width - 160 * k, height: titleSize.height + 10), options: [.usesLineFragmentOrigin])
   subtitle.draw(
-    with: NSRect(x: 110, y: blockTop + titleSize.height + gap, width: width - 220, height: subtitleSize.height + 10),
+    with: NSRect(x: 110 * k, y: blockTop + titleSize.height + gap, width: width - 220 * k, height: subtitleSize.height + 10),
     options: [.usesLineFragmentOrigin])
 
   // Ekran görüntüsü: yuvarlak köşe, gölge, ince çerçeve; alt kısım tuvalden taşar.
-  let shotWidth: CGFloat = 1060
+  let shotWidth: CGFloat = 1060 * k
   let shotHeight = shotWidth * shot.size.height / shot.size.width
-  let shotRect = NSRect(x: (width - shotWidth) / 2, y: 740, width: shotWidth, height: shotHeight)
-  let radius: CGFloat = 96
+  let shotRect = NSRect(x: (width - shotWidth) / 2, y: 740 * k, width: shotWidth, height: shotHeight)
+  let radius: CGFloat = 96 * k
   ctx.saveGState()
-  ctx.setShadow(offset: CGSize(width: 0, height: 30), blur: 80, color: NSColor.black.withAlphaComponent(slide.dark ? 0.6 : 0.22).cgColor)
+  ctx.setShadow(offset: CGSize(width: 0, height: 30 * k), blur: 80 * k, color: NSColor.black.withAlphaComponent(slide.dark ? 0.6 : 0.22).cgColor)
   (slide.dark ? color(0x2E2A24) : NSColor.white).setFill()
-  NSBezierPath(roundedRect: shotRect.insetBy(dx: -14, dy: -14), xRadius: radius + 14, yRadius: radius + 14).fill()
+  NSBezierPath(roundedRect: shotRect.insetBy(dx: -14 * k, dy: -14 * k), xRadius: radius + 14 * k, yRadius: radius + 14 * k).fill()
   ctx.restoreGState()
   ctx.saveGState()
   NSBezierPath(roundedRect: shotRect, xRadius: radius, yRadius: radius).addClip()
