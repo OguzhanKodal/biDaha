@@ -72,7 +72,7 @@ Hesap yok, reklam yok, internet gerekmez. Soruların, fotoğrafların ve ilerlem
 
 - **Veri toplama:** "Hayır, bu uygulamadan veri toplamıyoruz" → etiket: **Data Not Collected / Veri Toplanmaz**.
 - Gerekçe: Hesap, analitik, reklam, çökme raporlama, sunucu yok. Tüm veriler cihazda (SQLite + uygulama klasöründeki fotoğraflar). Bildirimler yerel. Yedek dosyası yalnızca kullanıcı paylaştığında ve kullanıcının seçtiği yere gider.
-- **Gizlilik politikası URL'si:** https://oguzhankodal.github.io/biDaha/privacy-policy (GitHub Pages, `docs/` klasöründen).
+- **Gizlilik politikası URL'si:** https://oguzhankodal.github.io/biDaha/privacy-policy (GitHub Pages, `docs/` klasöründen). App Store Connect'te tanımlı **her dil için** ayrı girilmeli (Türkçe ve English (U.S.)).
 - **Şifreleme:** Standart dışı şifreleme yok — `app.json` içinde `ios.config.usesNonExemptEncryption: false`.
 
 ## İzin metinleri (Info.plist)
@@ -89,7 +89,7 @@ Hesap yok, reklam yok, internet gerekmez. Soruların, fotoğrafların ve ilerlem
 
 ## Ekran görüntüleri
 
-App Store 6.9" iPhone ekran görüntüsü ister (1320 × 2868; iPhone 17 Pro Max simülatörü). Önerilen sıra:
+App Store **iki boyut** istiyor: 6.9" (1320 × 2868, `store/screenshots/`) ve 6.3" Dynamic Island'lı orta boy (1206 × 2622, `store/screenshots-6.3/` — 6.9"'dan `sips` ile küçültülür). Önerilen sıra:
 
 1. Bugün — "Bugün tekrar edilecek: 12 soru", geri sayım, seri
 2. Tekrar ekranı — kart, Çözdüm / Çözemedim
